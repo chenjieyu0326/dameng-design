@@ -24,98 +24,133 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-html{font-size:16px;-webkit-font-smoothing:antialiased}
+html{
+  font-size:16px;-webkit-font-smoothing:antialiased;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+}
+html::-webkit-scrollbar{width:0}
 body{
   font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;
   background:#000;color:#fff;
-  overflow-x:hidden;
 }
 
 /* ── Nav ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:50;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;justify-content:space-between;align-items:flex-start;
   padding:1.25rem;mix-blend-mode:difference;color:#fff;
   pointer-events:none;
 }
 nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
 nav a:hover{opacity:0.3}
+nav a.active{opacity:0.6}
 @media(min-width:1024px){nav{padding:1.25rem 2.5rem}}
 nav img{height:1.2rem;width:auto}
 @media(min-width:1024px){nav img{height:1.6rem}}
 
-/* ── Cover ── */
-.cover{
-  position:fixed;top:0;left:0;right:0;bottom:0;z-index:10;
+/* ── Page dots ── */
+.page-dots{
+  position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:100;
+  display:flex;flex-direction:column;gap:0.75rem;
+  mix-blend-mode:difference;
+}
+.page-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  border:none;cursor:pointer;padding:0;transition:all 0.3s;
+}
+.page-dot:hover,.page-dot.active{background:#fff;transform:scale(1.5)}
+
+/* ═══════ Page: Snap Sections ═══════ */
+.page{
+  min-height:100vh;
+  min-height:100svh;
+  scroll-snap-align:start;
+  position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-  transition:transform 0.8s cubic-bezier(0.22,0.61,0.36,1);
-  will-change:transform;
 }
-.cover.revealed{transform:translateY(-100vh)}
-.cover-bg{
+
+/* ── Cover Page ── */
+.cover-page{background:#000}
+
+/* Slideshow */
+.cover-slides{position:absolute;inset:0}
+.cover-slide{
   position:absolute;inset:0;
-  background:url('images/cover-bg.jpg') center/cover no-repeat;
-  filter:brightness(0.4);
-  animation:coverZoom 20s ease-in-out infinite alternate;
+  background-size:cover;background-position:center;
+  opacity:0;will-change:transform,opacity;
 }
-@keyframes coverZoom{
+.cover-slide.active{opacity:1;animation:kenBurns 7s ease-out forwards}
+.cover-slide.fading{opacity:0;animation:none;transition:opacity 1.5s ease;transform:scale(1.12)}
+.cover-slide:nth-child(1){background-image:url('images/cover-1.jpg')}
+.cover-slide:nth-child(2){background-image:url('images/cover-2.jpg')}
+.cover-slide:nth-child(3){background-image:url('images/cover-3.jpg')}
+
+@keyframes kenBurns{
   from{transform:scale(1)}
-  to{transform:scale(1.08)}
+  to{transform:scale(1.12)}
 }
+
 .cover-overlay{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,transparent 20%,rgba(0,0,0,0.8) 100%);
+  background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.7) 100%);
+  pointer-events:none;
 }
 .cover-content{
   position:relative;z-index:2;text-align:center;
+}
+.cover-content img{
+  width:min(65vw,360px);height:auto;margin:0 auto;
+  opacity:0.85;
   animation:fadeUp 2s ease-out 0.3s both;
 }
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(30px)}
   to{opacity:1;transform:translateY(0)}
 }
-.cover-content img{
-  width:min(70vw,380px);height:auto;margin:0 auto;
-  opacity:0.85;
-}
 .cover-tagline{
   margin-top:1.5rem;
-  font-size:clamp(0.625rem,1vw,0.75rem);
-  letter-spacing:0.14em;
-  color:rgba(255,255,255,0.35);
+  font-size:clamp(0.6rem,1vw,0.72rem);
+  letter-spacing:0.15em;
+  color:rgba(255,255,255,0.3);
+  animation:fadeUp 2s ease-out 0.8s both;
 }
 
-/* ── Scroll hint ── */
+/* Slide indicators on cover */
+.cover-indicators{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;
+  display:flex;gap:0.75rem;
+}
+.cover-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.3);
+  background:transparent;cursor:pointer;padding:0;
+  transition:all 0.3s;
+}
+.cover-dot.active{background:#fff;border-color:#fff}
+
+/* Scroll hint */
 .scroll-hint{
-  position:absolute;bottom:2rem;left:50%;z-index:11;
+  position:absolute;bottom:5rem;left:50%;z-index:10;
   transform:translateX(-50%);
-  color:rgba(255,255,255,0.3);
+  color:rgba(255,255,255,0.25);
   font-size:0.65rem;letter-spacing:0.1em;
-  animation:pulse 2s ease-in-out infinite;
+  animation:pulse 2.5s ease-in-out infinite;
+  pointer-events:none;
 }
 @keyframes pulse{
-  0%,100%{opacity:0.3;transform:translateX(-50%) translateY(0)}
-  50%{opacity:0.8;transform:translateX(-50%) translateY(6px)}
+  0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}
+  50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}
 }
 
-/* ── Content (slides up over cover) ── */
-.content{
-  position:relative;z-index:20;background:#000;
-  margin-top:100vh;
-  min-height:100vh;
-}
-@media(max-width:1023px){
-  .content{margin-top:100svh}
-}
+/* ═══════ Content Pages ═══════ */
+.content-page{background:#000}
+.page-inner{max-width:min(100%,calc((100vh - 20rem) * 1.5));margin:0 auto;padding:0 1.25rem}
+@media(min-width:1024px){.page-inner{padding:0 2.5rem}}
 
-/* ── Section ── */
-.section{padding:5rem 1.25rem}
-@media(min-width:1024px){.section{padding:8rem 2.5rem}}
-.section-inner{max-width:min(100%,calc((100vh - 20rem) * 1.5));margin:0 auto}
-.section-header{
-  text-align:center;margin-bottom:4rem;
-}
+.section-header{text-align:center;margin-bottom:4rem}
 .section-header h2{
   font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;
   letter-spacing:-0.02em;color:rgba(255,255,255,0.9);
@@ -131,25 +166,25 @@ nav img{height:1.2rem;width:auto}
 /* ── About ── */
 .about-grid{
   display:grid;grid-template-columns:1fr;gap:3rem;
-  align-items:start;max-width:min(100%,calc((100vh - 20rem) * 1.5));margin:0 auto;
+  align-items:start;
 }
 @media(min-width:768px){
   .about-grid{grid-template-columns:1fr 2fr;gap:0}
 }
 .about-photo{
-  width:100%;aspect-ratio:3/4;background:#1a1a1a;
+  width:100%;aspect-ratio:3/4;background:#111;
   display:flex;align-items:center;justify-content:center;
   color:rgba(255,255,255,0.1);font-size:3rem;
-  border-radius:2px;
+  border-radius:2px;overflow:hidden;
 }
-.about-photo img{width:100%;height:100%;object-fit:cover}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .about-text{padding:0}
 @media(min-width:768px){.about-text{padding:0 0 0 3rem}}
 .about-text h3{font-size:1.25rem;font-weight:400;margin-bottom:0.25rem}
 .about-text .role{font-size:0.75rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;letter-spacing:0.04em}
 .about-text .bio{font-size:0.85rem;line-height:1.9;color:rgba(255,255,255,0.45)}
 
-/* ── Work Grid ── */
+/* ── Works ── */
 .works-grid{
   display:flex;flex-direction:column;gap:1.25rem;
 }
@@ -157,20 +192,19 @@ nav img{height:1.2rem;width:auto}
 .work-card{display:flex;flex-direction:column;gap:0.5rem}
 @media(min-width:1024px){.work-card{gap:0.75rem}}
 .work-card-img{
-  position:relative;overflow:hidden;background:#1a1a1a;
+  position:relative;overflow:hidden;background:#111;
   border-radius:2px;aspect-ratio:1/0.6666;
+  display:flex;align-items:center;justify-content:center;
 }
-.work-card-img img{
-  width:100%;height:100%;object-fit:cover;
-  transition:opacity 0.5s,transform 0.6s;
-  opacity:0;
-}
-.work-card-img img.loaded{opacity:1}
-.work-card:hover .work-card-img img.loaded{transform:scale(1.03)}
 .work-card-img .placeholder{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   color:rgba(255,255,255,0.12);font-size:clamp(1rem,2vw,1.5rem);letter-spacing:0.04em;
 }
+.work-card-img img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 0.5s;
+}
+.work-card-img img.loaded{opacity:1}
+.work-card:hover .work-card-img img.loaded{transform:scale(1.03);transition:transform 0.8s}
 .work-card-info{display:flex;justify-content:space-between;align-items:baseline}
 .work-card-info .title{font-size:clamp(0.75rem,1.2vw,0.875rem);line-height:1.3}
 .work-card-info .meta{font-size:clamp(0.625rem,1vw,0.75rem);color:rgba(255,255,255,0.2)}
@@ -178,60 +212,78 @@ nav img{height:1.2rem;width:auto}
 /* ── Contact ── */
 .contact-list{text-align:center;max-width:400px;margin:0 auto}
 .contact-list p{font-size:0.85rem;line-height:2;color:rgba(255,255,255,0.45)}
+.contact-list a{transition:color 0.2s}
 .contact-list a:hover{color:rgba(255,255,255,0.7)}
 
 /* ── Footer ── */
-footer{
-  text-align:center;padding:2rem 1.25rem 3rem;
+.footer-page{
+  min-height:auto;scroll-snap-align:start;
+  text-align:center;padding:4rem 1.25rem;
   font-size:0.7rem;color:rgba(255,255,255,0.15);
+  background:#000;
 }
-footer a{transition:opacity 0.3s}
-footer a:hover{opacity:0.5}
+.footer-page a{transition:opacity 0.3s}
+.footer-page a:hover{opacity:0.5}
+
+/* ── Animations ── */
+.fade-on-scroll{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+.fade-on-scroll.visible{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="#"><img src="images/logo-dameng-white.png" alt="大盟"></a>
+<nav id="nav">
+  <a href="#cover"><img src="images/logo-dameng-white.png" alt="大盟"></a>
   <a href="#works">作品</a>
   <a href="#about">关于</a>
   <a href="#contact">联系</a>
 </nav>
 
-<!-- Cover -->
-<section class="cover" id="cover">
-  <div class="cover-bg"></div>
+<div class="page-dots" id="pageDots"></div>
+
+<!-- ═══ Page 1: Cover ═══ -->
+<section class="page cover-page" id="cover">
+  <div class="cover-slides" id="coverSlides">
+    <div class="cover-slide active"></div>
+    <div class="cover-slide"></div>
+    <div class="cover-slide"></div>
+  </div>
   <div class="cover-overlay"></div>
   <div class="cover-content">
     <img src="images/logo-dameng-white.png" alt="大盟">
     <div class="cover-tagline">STAGE LIGHTING DESIGN</div>
   </div>
-  <div class="scroll-hint">↓ SCROLL</div>
+  <div class="cover-indicators" id="coverIndicators">
+    <button class="cover-dot active" data-index="0"></button>
+    <button class="cover-dot" data-index="1"></button>
+    <button class="cover-dot" data-index="2"></button>
+  </div>
+  <div class="scroll-hint" id="scrollHint">↓ SCROLL</div>
 </section>
 
-<!-- Content (slides up) -->
-<div class="content">
-
-  <!-- Works -->
-  <section class="section" id="works">
-    <div class="section-header">
+<!-- ═══ Page 2: Works ═══ -->
+<section class="page content-page" id="works">
+  <div class="page-inner">
+    <div class="section-header fade-on-scroll">
       <h2>作品</h2>
       <p>演唱会 · 大型综艺 · 直播晚会<br>用光讲述每一个舞台故事</p>
       <div class="section-divider"></div>
     </div>
-    <div class="works-grid" id="worksGrid"></div>
-  </section>
+    <div class="works-grid fade-on-scroll" id="worksGrid"></div>
+  </div>
+</section>
 
-  <!-- About -->
-  <section class="section" id="about">
-    <div class="section-header">
+<!-- ═══ Page 3: About ═══ -->
+<section class="page content-page" id="about">
+  <div class="page-inner">
+    <div class="section-header fade-on-scroll">
       <h2>关于</h2>
       <p>湖南大盟文化发展有限公司，成立于2020年。<br>专注舞台灯光设计，服务国内一线卫视及视频平台。</p>
       <div class="section-divider"></div>
     </div>
-    <div class="about-grid">
+    <div class="about-grid fade-on-scroll">
       <div class="about-photo">
-        <img src="images/avatar.jpg" alt="陈捷予">
+        <img src="images/avatar.jpg" alt="陈捷予" loading="lazy">
       </div>
       <div class="about-text">
         <h3>陈捷予</h3>
@@ -242,57 +294,133 @@ footer a:hover{opacity:0.5}
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Contact -->
-  <section class="section" id="contact" style="padding-top:0">
-    <div class="section-header">
+<!-- ═══ Page 4: Contact ═══ -->
+<section class="page content-page" id="contact">
+  <div class="page-inner">
+    <div class="section-header fade-on-scroll">
       <h2>联系</h2>
       <div class="section-divider"></div>
     </div>
-    <div class="contact-list">
+    <div class="contact-list fade-on-scroll">
       <p>长沙 · 三一大道526号<br>旺德府凯悦国际大厦704</p>
       <p><a href="tel:18670918666">186-7091-8666</a></p>
       <p><a href="mailto:www.44288183@qq.com">www.44288183@qq.com</a></p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    <p>© 2025 湖南大盟文化发展有限公司</p>
-  </footer>
-</div>
+<!-- ═══ Footer ═══ -->
+<footer class="footer-page">
+  <p>© 2025 湖南大盟文化发展有限公司</p>
+</footer>
 
 <script>
-// ── Cover slide-up on scroll ──
-let coverRevealed = false;
-const cover = document.getElementById('cover');
+/* ═══════════ Cover Slideshow with Ken Burns ═══════════ */
+const slides = document.querySelectorAll('.cover-slide');
+const indicators = document.querySelectorAll('.cover-dot');
+let current = 0;
+let slideTimer;
 
-window.addEventListener('wheel', (e) => {
-  if (!coverRevealed && e.deltaY > 0) {
-    cover.classList.add('revealed');
-    coverRevealed = true;
-    setTimeout(() => {
-      document.body.style.overflow = '';
-    }, 800);
+function goSlide(idx) {
+  if (idx === current) return;
+  const prev = slides[current];
+  const next = slides[idx];
+
+  // fade out prev
+  prev.classList.add('fading');
+  prev.classList.remove('active');
+
+  // fade in next with fresh ken burns
+  next.classList.remove('fading');
+  next.classList.add('active');
+  // re-trigger animation
+  void next.offsetWidth;
+
+  // indicators
+  indicators[current].classList.remove('active');
+  indicators[idx].classList.add('active');
+
+  current = idx;
+  resetTimer();
+}
+
+function resetTimer() {
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => goSlide((current + 1) % slides.length), 6500);
+}
+
+indicators.forEach(dot => {
+  dot.addEventListener('click', () => goSlide(parseInt(dot.dataset.index)));
+});
+
+// start
+slideTimer = setInterval(() => goSlide((current + 1) % slides.length), 6500);
+
+/* ═══════════ Page Tracking ═══════════ */
+const pages = document.querySelectorAll('.page, .footer-page');
+const pageIds = ['cover','works','about','contact'];
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const scrollHint = document.getElementById('scrollHint');
+
+// build page dots
+const dotsContainer = document.getElementById('pageDots');
+pageIds.forEach((id, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'page-dot' + (i === 0 ? ' active' : '');
+  dot.dataset.page = id;
+  dot.addEventListener('click', () => {
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  });
+  dotsContainer.appendChild(dot);
+});
+
+let lastPage = 0;
+const allDots = document.querySelectorAll('#pageDots .page-dot');
+
+function updateActive() {
+  const st = window.scrollY;
+  const vh = window.innerHeight;
+  let best = 0;
+  let bestDist = Infinity;
+
+  pages.forEach((p, i) => {
+    const idx = i < pages.length - 1 ? i : pageIds.length - 1;
+    const top = p.offsetTop;
+    const dist = Math.abs(st - top);
+    if (dist < bestDist) { bestDist = dist; best = idx; }
+  });
+
+  if (best !== lastPage) {
+    lastPage = best;
+    // nav
+    navLinks.forEach((a,i) => {
+      a.classList.toggle('active', i === best);
+    });
+    // dots
+    allDots.forEach((d,i) => d.classList.toggle('active', i === best));
+    // scroll hint
+    if (scrollHint) {
+      scrollHint.style.opacity = best === 0 ? '1' : '0';
+      scrollHint.style.pointerEvents = best === 0 ? 'auto' : 'none';
+    }
   }
-}, { passive: true });
+}
+window.addEventListener('scroll', updateActive, {passive:true});
+updateActive();
 
-// Touch support
-let touchStartY = 0;
-window.addEventListener('touchstart', (e) => {
-  touchStartY = e.touches[0].clientY;
-}, { passive: true });
-window.addEventListener('touchmove', (e) => {
-  if (!coverRevealed && e.touches[0].clientY < touchStartY - 30) {
-    cover.classList.add('revealed');
-    coverRevealed = true;
-    setTimeout(() => {
-      document.body.style.overflow = '';
-    }, 800);
-  }
-}, { passive: true });
+/* ═══════════ Fade on scroll ═══════════ */
+const fadeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, {threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 
-// ── Projects data ──
+document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(el));
+
+/* ═══════════ Works ═══════════ */
 const projects = [
   {title:"披荆斩棘",subtitle:"第1~5季"},
   {title:"乘风破浪",subtitle:"第2/5/6季"},
@@ -328,8 +456,6 @@ const projects = [
   {title:"易烊千玺·礐壆",subtitle:"2025演唱会"},
 ];
 
-const images = {};
-
 const grid = document.getElementById('worksGrid');
 projects.forEach(p => {
   const card = document.createElement('div');
@@ -337,7 +463,6 @@ projects.forEach(p => {
   card.innerHTML = `
     <div class="work-card-img">
       <div class="placeholder">${p.title}</div>
-      ${images[p.title] ? `<img src="${images[p.title]}" alt="${p.title}" loading="lazy" onload="this.classList.add('loaded')">` : ''}
     </div>
     <div class="work-card-info">
       <div class="title">${p.title}</div>
