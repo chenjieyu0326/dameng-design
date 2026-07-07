@@ -5,362 +5,224 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>大盟文化 · DAMENG DESIGN</title>
 <style>
-:root {
-  --bg: #0a0a0c;
-  --bg-elevated: #121217;
-  --bg-card: #18181f;
-  --fg: #e6e4e1;
-  --fg-muted: #8a8885;
-  --fg-dim: #52504e;
-  --accent: #d4a853;
-  --accent-dim: rgba(212,168,83,0.12);
-  --hairline: rgba(255,255,255,0.07);
-  --hairline-strong: rgba(255,255,255,0.12);
-  --w-prose: 720px;
-  --w-wide: 1180px;
-  --w-ultra: 1440px;
-  --font-display: "Times New Roman", "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif;
-  --font-sans: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* ── Variables ── */
+:root{
+  --sm-header:3rem;
+  --header:3.75rem;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
-
-body { background: var(--bg); overflow-x: hidden; }
-
-.container { max-width: var(--w-ultra); margin: 0 auto; padding: 0 48px; }
+/* ── Base ── */
+html{font-size:16px;-webkit-font-smoothing:antialiased;background:#fff;color:#000;}
+body{font-family:"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;min-height:100svh}
 
 /* ── Nav ── */
-.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 0; transition: background 0.3s, backdrop-filter 0.3s; }
-.nav.scrolled { background: rgba(10,10,12,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--hairline); }
-.nav .container { display: flex; justify-content: space-between; align-items: center; }
-.nav-logo { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.06em; color: var(--accent); text-decoration: none; }
-.nav-links { display: flex; gap: 36px; list-style: none; }
-.nav-links a { color: var(--fg-muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.04em; transition: color 0.2s; }
-.nav-links a:hover { color: var(--accent); }
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0.75rem;height:var(--sm-header);
+  font-size:clamp(1rem,2.5vw,1.25rem);
+  letter-spacing:-0.01em;
+  mix-blend-mode:difference;color:#fff;
+}
+nav a{transition:opacity 0.3s;opacity:1}
+nav a:hover{opacity:0.3}
+.nav-links{display:flex;gap:1.5rem}
+@media(max-width:1023px){
+  .nav-links{display:none}
+}
 
-/* ── Hero ── */
-.hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 80% 60% at 50% 70%, rgba(212,168,83,0.04) 0%, transparent 70%); pointer-events: none; }
-.hero-beam { position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 1px; height: 500px; background: linear-gradient(to bottom, transparent, rgba(212,168,83,0.15), transparent); filter: blur(30px); opacity: 0.6; }
-.hero-content { max-width: var(--w-prose); padding: 120px 0 80px; }
-.hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 24px; }
-.hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.01em; color: var(--fg); margin-bottom: 24px; }
-.hero h1 em { font-style: normal; color: var(--accent); }
-.hero p { font-size: 1.1rem; line-height: 1.7; color: var(--fg-muted); max-width: 560px; margin-bottom: 40px; }
-.hero-cta { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border: 1px solid var(--hairline-strong); color: var(--fg); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.06em; transition: border-color 0.2s, background 0.2s; }
-.hero-cta:hover { border-color: var(--accent); background: var(--accent-dim); }
-.hero-cta span { font-size: 1.1rem; }
+/* ── Main Feed ── */
+main{padding:0 1.25rem}
+@media(min-width:1024px){
+  main{padding:0 1.25rem}
+  nav{height:var(--header);padding:0.9375rem 1.25rem}
+}
+.feed{
+  display:flex;flex-direction:column;gap:1.25rem;
+  width:100%;
+  margin:0 auto;
+  padding-top:var(--sm-header);
+}
+@media(min-width:1024px){
+  .feed{
+    padding-top:var(--header);
+    gap:6.25rem;
+  }
+}
+@media(min-width:768px){
+  .feed{
+    max-width:min(100%,calc((100vh - 25rem) * 1.5));
+    min-width:0;
+    padding-top:var(--header);
+  }
+}
 
-/* ── Section ── */
-.section { padding: 120px 0; }
-.section-label { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
-.section-title { font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; line-height: 1.15; color: var(--fg); margin-bottom: 16px; letter-spacing: -0.01em; }
-.section-lead { font-size: 1rem; line-height: 1.7; color: var(--fg-muted); max-width: var(--w-prose); }
+/* ── Project Card ── */
+.project{
+  display:flex;flex-direction:column;
+  gap:0.5rem;
+}
+@media(min-width:1024px){
+  .project{gap:0.75rem}
+}
+.project-image{
+  position:relative;
+  overflow:hidden;
+  background:#e5e5e5;
+  border-radius:2px;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.1);
+  aspect-ratio:1 / 0.6666;
+}
+.project-image img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:opacity 0.5s;
+  opacity:0;
+}
+.project-image img.loaded{opacity:1}
+.project-image .placeholder{
+  position:absolute;inset:0;
+  background:#d5d5d5;
+  display:flex;align-items:center;justify-content:center;
+  color:#aaa;font-size:clamp(0.75rem,1.5vw,0.875rem);
+  letter-spacing:0.02em;
+}
+.project-info{display:flex;justify-content:space-between;align-items:baseline}
+.project-title{font-size:clamp(0.75rem,1.5vw,0.875rem);line-height:1.3}
+.project-meta{font-size:clamp(0.625rem,1.2vw,0.75rem);color:rgba(0,0,0,0.3);white-space:nowrap}
 
-/* ── About / Founder ── */
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: start; }
-.about-avatar { width: 100%; aspect-ratio: 3/4; background: var(--bg-card); border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-.about-avatar::after { content: ''; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; border: 1px solid var(--hairline-strong); }
-.about-avatar-inner { font-family: var(--font-display); font-size: 5rem; color: var(--fg-dim); opacity: 0.3; }
-.about-text h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; color: var(--fg); margin-bottom: 8px; }
-.about-text .founder-meta { font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 32px; line-height: 1.6; }
-.about-text .bio { font-size: 0.95rem; line-height: 1.8; color: var(--fg-muted); }
-.about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; border-top: 1px solid var(--hairline); padding-top: 48px; }
-.stat-value { font-family: var(--font-display); font-size: 2.5rem; color: var(--accent); line-height: 1; margin-bottom: 8px; }
-.stat-label { font-size: 0.78rem; color: var(--fg-dim); letter-spacing: 0.04em; }
-
-/* ── Works ── */
-.works-tabs { display: flex; gap: 12px; margin: 48px 0 40px; flex-wrap: wrap; }
-.works-tab { padding: 10px 24px; border: 1px solid var(--hairline); background: transparent; color: var(--fg-muted); font-size: 0.82rem; cursor: pointer; transition: all 0.2s; letter-spacing: 0.03em; font-family: var(--font-sans); }
-.works-tab:hover, .works-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-.works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2px; }
-.work-card { background: var(--bg-card); border: 1px solid var(--hairline); padding: 28px; transition: border-color 0.2s, background 0.2s; cursor: default; }
-.work-card:hover { border-color: var(--hairline-strong); background: var(--bg-elevated); }
-.work-card .work-category { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
-.work-card .work-title { font-size: 1rem; color: var(--fg); margin-bottom: 6px; line-height: 1.3; font-weight: 500; }
-.work-card .work-period { font-size: 0.78rem; color: var(--fg-dim); }
-
-/* ── Contact ── */
-.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; }
-.contact-info { display: flex; flex-direction: column; gap: 32px; }
-.contact-item { border-left: 2px solid var(--accent); padding-left: 20px; }
-.contact-item .ci-label { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--fg-dim); text-transform: uppercase; margin-bottom: 6px; }
-.contact-item .ci-value { font-size: 0.95rem; color: var(--fg); line-height: 1.6; }
-.contact-map { aspect-ratio: 4/3; background: var(--bg-card); border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; color: var(--fg-dim); font-size: 0.85rem; letter-spacing: 0.04em; }
+/* ── Loading ── */
+.spinner{width:24px;height:24px;border:2px solid #e5e5e5;border-top-color:#999;border-radius:50%;animation:spin 0.8s linear infinite;margin:2rem auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-more{display:flex;justify-content:center;padding:2rem 0}
 
 /* ── Footer ── */
-.footer { border-top: 1px solid var(--hairline); padding: 40px 0; }
-.footer .container { display: flex; justify-content: space-between; align-items: center; }
-.footer-copy { font-size: 0.78rem; color: var(--fg-dim); }
-.footer-links { display: flex; gap: 24px; list-style: none; }
-.footer-links a { color: var(--fg-dim); text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
-.footer-links a:hover { color: var(--fg-muted); }
-
-/* ── Divider ── */
-.hairline { border: none; border-top: 1px solid var(--hairline); margin: 0; }
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .container { padding: 0 24px; }
-  .nav-links { display: none; }
-  .about-grid { grid-template-columns: 1fr; gap: 48px; }
-  .about-avatar { aspect-ratio: 4/3; }
-  .contact-row { grid-template-columns: 1fr; gap: 48px; }
-  .section { padding: 80px 0; }
-  .hero { min-height: auto; }
-  .hero-content { padding: 140px 0 80px; }
-  .works-grid { grid-template-columns: repeat(2, 1fr); }
-  .about-stats { grid-template-columns: 1fr; }
+footer{
+  text-align:center;padding:3rem 1.25rem 2rem;
+  font-size:0.75rem;color:rgba(0,0,0,0.3);
 }
-@media (max-width: 480px) {
-  .works-grid { grid-template-columns: 1fr; }
-  .works-tabs { gap: 8px; }
-  .works-tab { padding: 8px 16px; font-size: 0.75rem; }
-}
-
-/* ── Animation ── */
-.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-
-.back-to-top { position: fixed; bottom: 32px; right: 32px; width: 40px; height: 40px; border: 1px solid var(--hairline); background: var(--bg-elevated); color: var(--fg-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s, border-color 0.2s; z-index: 99; }
-.back-to-top.visible { opacity: 1; pointer-events: auto; }
-.back-to-top:hover { border-color: var(--accent); color: var(--accent); }
+footer a{transition:opacity 0.3s}
+footer a:hover{opacity:0.5}
 </style>
 </head>
 <body>
 
 <!-- Navigation -->
-<nav class="nav" id="nav">
-  <div class="container">
-    <a href="#" class="nav-logo">DAMENG DESIGN</a>
-    <ul class="nav-links">
-      <li><a href="#about">关于</a></li>
-      <li><a href="#works">作品</a></li>
-      <li><a href="#contact">联系</a></li>
-    </ul>
+<nav>
+  <a href="/">大盟文化</a>
+  <div class="nav-links">
+    <a href="#work">作品</a>
+    <a href="#about">关于</a>
+    <a href="#contact">联系</a>
   </div>
 </nav>
 
-<!-- Hero -->
-<header class="hero" id="hero">
-  <div class="hero-beam"></div>
-  <div class="container">
-    <div class="hero-content fade-in">
-      <div class="hero-eyebrow">Stage Lighting Design Studio</div>
-      <h1>光之所至<br><em>舞台即生</em></h1>
-      <p>大盟文化专注演唱会、大型综艺节目、直播晚会的灯光设计。从《歌手》到《披荆斩棘》，从 B 站跨年到王者荣耀盛典——我们用光讲述每一个舞台故事。</p>
-      <a href="#works" class="hero-cta">探索作品 <span>→</span></a>
-    </div>
+<!-- Main Feed -->
+<main>
+  <div class="feed" id="feed">
+    <!-- Projects loaded by JS -->
   </div>
-</header>
-
-<!-- About -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">About</div>
-      <h2 class="section-title">关于大盟文化</h2>
-      <p class="section-lead">湖南大盟文化发展有限公司成立于2020年，由资深电视灯光设计师陈捷予创办，专注为国内顶级综艺、晚会、演唱会提供灯光设计解决方案。</p>
-    </div>
-
-    <div class="about-grid fade-in">
-      <div class="about-avatar">
-        <div class="about-avatar-inner">D M</div>
-      </div>
-      <div class="about-text">
-        <h3>陈捷予</h3>
-        <div class="founder-meta">创始人 &amp; 灯光设计总监<br>中央戏剧学院舞台美术系灯光设计专业</div>
-        <div class="bio">
-          1986年生于河南洛阳，毕业于中央戏剧学院舞台美术系灯光设计专业。毕业后入职湖南电视台，成为一名专业电视灯光设计师。十余年行业深耕，参与并主导了众多S+级大型综艺项目的灯光设计工作。<br><br>
-          2020年4月创办大盟文化，以极致的专业追求和对光影的深刻理解，为国内顶尖卫视和视频平台提供灯光设计服务。作品涵盖综艺节目、大型直播晚会、个人演唱会等多个领域，每一次呈现都力求给观众带来惊艳的视觉体验。
-        </div>
-      </div>
-    </div>
-
-    <div class="about-stats fade-in">
-      <div>
-        <div class="stat-value">5年</div>
-        <div class="stat-label">公司成立</div>
-      </div>
-      <div>
-        <div class="stat-value">50+</div>
-        <div class="stat-label">大型项目</div>
-      </div>
-      <div>
-        <div class="stat-value">15年+</div>
-        <div class="stat-label">行业经验</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="hairline">
-
-<!-- Works -->
-<section class="section" id="works">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Works</div>
-      <h2 class="section-title">代表作品</h2>
-      <p class="section-lead">覆盖综艺栏目、大型晚会、个人演唱会三大业务板块，服务国内一线卫视及主流视频平台。</p>
-    </div>
-
-    <div class="works-tabs fade-in">
-      <button class="works-tab active" data-category="all">全部</button>
-      <button class="works-tab" data-category="show">综艺栏目</button>
-      <button class="works-tab" data-category="gala">大型晚会</button>
-      <button class="works-tab" data-category="concert">演唱会</button>
-    </div>
-
-    <div class="works-grid fade-in" id="worksGrid">
-    </div>
-  </div>
-</section>
-
-<hr class="hairline">
-
-<!-- Contact -->
-<section class="section" id="contact">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Contact</div>
-      <h2 class="section-title">联系我们</h2>
-      <p class="section-lead">期待与您合作，共同打造下一个惊艳舞台。</p>
-    </div>
-
-    <div class="contact-row fade-in">
-      <div class="contact-info">
-        <div class="contact-item">
-          <div class="ci-label">电话</div>
-          <div class="ci-value">186-7091-8666</div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-label">邮箱</div>
-          <div class="ci-value">www.44288183@qq.com</div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-label">地址</div>
-          <div class="ci-value">湖南省长沙市长沙县三一大道526号<br>旺德府凯悦国际大厦704</div>
-        </div>
-      </div>
-      <div class="contact-map">
-        旺德府凯悦国际大厦
-      </div>
-    </div>
-  </div>
-</section>
+</main>
 
 <!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-copy">© 2025 湖南大盟文化发展有限公司</div>
-    <ul class="footer-links">
-      <li><a href="#hero">首页</a></li>
-      <li><a href="#about">关于</a></li>
-      <li><a href="#works">作品</a></li>
-      <li><a href="#contact">联系</a></li>
-    </ul>
-  </div>
+<footer>
+  <p>© 2025 湖南大盟文化发展有限公司 &nbsp;·&nbsp; 长沙 &nbsp;·&nbsp; 灯光设计 &nbsp;·&nbsp; 舞台美术</p>
+  <p style="margin-top:0.5rem">
+    <a href="mailto:www.44288183@qq.com">www.44288183@qq.com</a>
+    &nbsp;·&nbsp;
+    <a href="tel:18670918666">186-7091-8666</a>
+  </p>
 </footer>
 
-<button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
-
 <script>
-// Nav scroll effect
-const nav = document.getElementById('nav');
-const backToTop = document.getElementById('backToTop');
-
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY > 64;
-  nav.classList.toggle('scrolled', scrolled);
-  backToTop.classList.toggle('visible', window.scrollY > 600);
-});
-
-backToTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Works data
-const works = [
-  { title: '披荆斩棘', period: '第1~5季', category: 'show' },
-  { title: '乘风破浪', period: '第2/5/6季', category: 'show' },
-  { title: '声生不息', period: '港乐/宝岛/家年华/大湾区季', category: 'show' },
-  { title: '歌手', period: '2024巅峰之夜 / 2025', category: 'show' },
-  { title: '青年π计划', period: '第1季', category: 'show' },
-  { title: '明日之子', period: '第3/4/5季', category: 'show' },
-  { title: '火星情报局', period: '第2/3/4/5/7季', category: 'show' },
-  { title: '爱乐之都', period: '第1季', category: 'show' },
-  { title: '我是特优生', period: '第1季', category: 'show' },
-  { title: '炙热的我们', period: '', category: 'show' },
-  { title: '湖南卫视跨年晚会', period: '2021-2022', category: 'gala' },
-  { title: 'B站跨年晚会', period: '2021-2024', category: 'gala' },
-  { title: '王者荣耀周年音乐盛典', period: '2020-2025', category: 'gala' },
-  { title: '和平精英总决赛中场秀', period: '2022 / 2023', category: 'gala' },
-  { title: '抖音直播嘉年华', period: '2022', category: 'gala' },
-  { title: '央视网络春晚', period: '2019-2021', category: 'gala' },
-  { title: '腾讯家族年年年夜饭', period: '2021-2022', category: 'gala' },
-  { title: '腾讯视频星光大赏', period: '2023 / 2024', category: 'gala' },
-  { title: '阅文IP盛典', period: '2023 / 2024', category: 'gala' },
-  { title: '四川卫视跨年晚会', period: '2024', category: 'gala' },
-  { title: '川渝春晚', period: '2024', category: 'gala' },
-  { title: '抖音小年夜', period: '2024-2025', category: 'gala' },
-  { title: '青春芒果夜', period: '2024-2025', category: 'gala' },
-  { title: '小芒种花夜', period: '2021', category: 'gala' },
-  { title: '明星大侦探新春演唱会', period: '2020-2023', category: 'gala' },
-  { title: '无限X青春派对巡回演唱会', period: '2024-2025', category: 'gala' },
-  { title: 'RISE全国巡演', period: '', category: 'concert' },
-  { title: '李宇春·周末愉快', period: '2024巡回演唱会', category: 'concert' },
-  { title: '檀健次·多见一次', period: '2024巡回演唱会', category: 'concert' },
-  { title: '毛不易·生日演唱会', period: '2024', category: 'concert' },
-  { title: '刘德华·把我唱给你听', period: '抖音线上演唱会', category: 'concert' },
-  { title: '易烊千玺·礐壆', period: '2025演唱会', category: 'concert' },
+// ── Projects data ──
+const projects = [
+  {title:"披荆斩棘",subtitle:"第1~5季",cat:"show"},
+  {title:"乘风破浪",subtitle:"第2/5/6季",cat:"show"},
+  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",cat:"show"},
+  {title:"歌手",subtitle:"2024巅峰之夜 / 2025",cat:"show"},
+  {title:"青年π计划",subtitle:"第1季",cat:"show"},
+  {title:"明日之子",subtitle:"第3/4/5季",cat:"show"},
+  {title:"火星情报局",subtitle:"第2/3/4/5/7季",cat:"show"},
+  {title:"爱乐之都",subtitle:"第1季",cat:"show"},
+  {title:"我是特优生",subtitle:"第1季",cat:"show"},
+  {title:"炙热的我们",subtitle:"",cat:"show"},
+  {title:"湖南卫视跨年晚会",subtitle:"2021-2022",cat:"gala"},
+  {title:"B站跨年晚会",subtitle:"2021-2024",cat:"gala"},
+  {title:"王者荣耀周年音乐盛典",subtitle:"2020-2025",cat:"gala"},
+  {title:"和平精英总决赛中场秀",subtitle:"2022 / 2023",cat:"gala"},
+  {title:"抖音直播嘉年华",subtitle:"2022",cat:"gala"},
+  {title:"央视网络春晚",subtitle:"2019-2021",cat:"gala"},
+  {title:"腾讯家族年年年夜饭",subtitle:"2021-2022",cat:"gala"},
+  {title:"腾讯视频星光大赏",subtitle:"2023 / 2024",cat:"gala"},
+  {title:"阅文IP盛典",subtitle:"2023 / 2024",cat:"gala"},
+  {title:"四川卫视跨年晚会",subtitle:"2024",cat:"gala"},
+  {title:"川渝春晚",subtitle:"2024",cat:"gala"},
+  {title:"抖音小年夜",subtitle:"2024-2025",cat:"gala"},
+  {title:"青春芒果夜",subtitle:"2024-2025",cat:"gala"},
+  {title:"小芒种花夜",subtitle:"2021",cat:"gala"},
+  {title:"明星大侦探新春演唱会",subtitle:"2020-2023",cat:"gala"},
+  {title:"无限X青春派对巡回演唱会",subtitle:"2024-2025",cat:"gala"},
+  {title:"RISE全国巡演",subtitle:"",cat:"concert"},
+  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",cat:"concert"},
+  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",cat:"concert"},
+  {title:"毛不易·生日演唱会",subtitle:"2024",cat:"concert"},
+  {title:"刘德华·把我唱给你听",subtitle:"抖音线上演唱会",cat:"concert"},
+  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",cat:"concert"},
 ];
 
-const catLabels = {
-  show: '综艺栏目',
-  gala: '大型晚会',
-  concert: '演唱会'
-};
+// ── Image config ──
+// TODO: update this map with real image URLs
+const images = {}; // { "披荆斩棘": "https://...", ... }
 
-function renderWorks(filter = 'all') {
-  const grid = document.getElementById('worksGrid');
-  const filtered = filter === 'all' ? works : works.filter(w => w.category === filter);
-  grid.innerHTML = filtered.map(w => `
-    <div class="work-card">
-      <div class="work-category">${catLabels[w.category]}</div>
-      <div class="work-title">${w.title}</div>
-      <div class="work-period">${w.period || '—'}</div>
+// ── Render ──
+const feed = document.getElementById('feed');
+
+function renderProject(p) {
+  const div = document.createElement('div');
+  div.className = 'project';
+  
+  const imgUrl = images[p.title] || null;
+  
+  div.innerHTML = `
+    <div class="project-image">
+      <div class="placeholder">${p.title}</div>
+      ${imgUrl ? `<img src="${imgUrl}" alt="${p.title}" onload="this.classList.add('loaded')">` : ''}
     </div>
-  `).join('');
+    <div class="project-info">
+      <div class="project-title">${p.title}</div>
+      ${p.subtitle ? `<div class="project-meta">${p.subtitle}</div>` : ''}
+    </div>
+  `;
+  
+  feed.appendChild(div);
 }
 
-// Tab switching
-document.querySelectorAll('.works-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.works-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    renderWorks(tab.dataset.category);
-  });
-});
+projects.forEach(renderProject);
 
-// Initial render
-renderWorks();
-
-// Fade-in observer
+// ── Intersection Observer for lazy images ──
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+      const imgs = entry.target.querySelectorAll('img');
+      imgs.forEach(img => {
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.onload = () => img.classList.add('loaded');
+          delete img.dataset.src;
+        }
+      });
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+}, { rootMargin: '200px' });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Trigger hero fade immediately
-document.querySelector('.hero-content.fade-in').classList.add('visible');
+document.querySelectorAll('.project').forEach(el => observer.observe(el));
 </script>
 
 </body>
