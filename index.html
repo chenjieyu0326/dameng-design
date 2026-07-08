@@ -80,10 +80,14 @@ nav img{height:1.2rem;width:auto}
 .cover-slide{
   position:absolute;inset:0;
   background-size:cover;background-position:center;
-  opacity:0;will-change:transform,opacity;
+  opacity:0;
+  transition:opacity 2s ease-in-out;
+  transform:scale(1.12);
 }
-.cover-slide.active{opacity:1;animation:kenBurns 7s ease-out forwards}
-.cover-slide.fading{opacity:0;animation:none;transition:opacity 1.5s ease;transform:scale(1.12)}
+.cover-slide.show{
+  opacity:1;
+  animation:kenBurns 8s ease-out forwards;
+}
 .cover-slide:nth-child(1){background-image:url('images/cover-1.jpg')}
 .cover-slide:nth-child(2){background-image:url('images/cover-2.jpg')}
 .cover-slide:nth-child(3){background-image:url('images/cover-3.jpg')}
@@ -244,7 +248,7 @@ nav img{height:1.2rem;width:auto}
 <!-- ═══ Page 1: Cover ═══ -->
 <section class="page cover-page" id="cover">
   <div class="cover-slides" id="coverSlides">
-    <div class="cover-slide active"></div>
+    <div class="cover-slide show"></div>
     <div class="cover-slide"></div>
     <div class="cover-slide"></div>
   </div>
@@ -326,23 +330,15 @@ let slideTimer;
 
 function goSlide(idx) {
   if (idx === current) return;
-  const prev = slides[current];
-  const next = slides[idx];
-
-  // fade out prev
-  prev.classList.add('fading');
-  prev.classList.remove('active');
-
-  // fade in next with fresh ken burns
-  next.classList.remove('fading');
-  next.classList.add('active');
-  // re-trigger animation
-  void next.offsetWidth;
-
+  // remove .show from current (fade out via opacity transition)
+  slides[current].classList.remove('show');
+  // add .show to next (fade in via opacity transition + ken burns)
+  slides[idx].classList.add('show');
+  // re-trigger ken burns animation
+  void slides[idx].offsetWidth;
   // indicators
   indicators[current].classList.remove('active');
   indicators[idx].classList.add('active');
-
   current = idx;
   resetTimer();
 }
@@ -356,7 +352,7 @@ indicators.forEach(dot => {
   dot.addEventListener('click', () => goSlide(parseInt(dot.dataset.index)));
 });
 
-// start
+// start: first slide already has .show in HTML
 slideTimer = setInterval(() => goSlide((current + 1) % slides.length), 6500);
 
 /* ═══════════ Page Tracking ═══════════ */
