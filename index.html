@@ -75,26 +75,12 @@ nav img{height:1.2rem;width:auto}
 /* ── Cover Page ── */
 .cover-page{background:#000}
 
-/* Slideshow */
-.cover-slides{position:absolute;inset:0}
-.cover-slide{
+/* Cover video */
+.cover-video{
   position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  opacity:0;
-  transition:opacity 2s ease-in-out;
-  transform:scale(1.12);
-}
-.cover-slide.show{
-  opacity:1;
-  animation:kenBurns 8s ease-out forwards;
-}
-.cover-slide:nth-child(1){background-image:url('images/cover-1.jpg')}
-.cover-slide:nth-child(2){background-image:url('images/cover-2.jpg')}
-.cover-slide:nth-child(3){background-image:url('images/cover-3.jpg')}
-
-@keyframes kenBurns{
-  from{transform:scale(1)}
-  to{transform:scale(1.12)}
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:0;
 }
 
 .cover-overlay{
@@ -247,21 +233,15 @@ nav img{height:1.2rem;width:auto}
 
 <!-- ═══ Page 1: Cover ═══ -->
 <section class="page cover-page" id="cover">
-  <div class="cover-slides" id="coverSlides">
-    <div class="cover-slide show"></div>
-    <div class="cover-slide"></div>
-    <div class="cover-slide"></div>
-  </div>
+  <video class="cover-video" autoplay muted loop playsinline preload="auto" id="coverVideo">
+    <source src="images/cover-video.mp4" type="video/mp4">
+  </video>
   <div class="cover-overlay"></div>
   <div class="cover-content">
     <img src="images/logo-dameng-white.png" alt="大盟">
     <div class="cover-tagline">STAGE LIGHTING DESIGN</div>
   </div>
-  <div class="cover-indicators" id="coverIndicators">
-    <button class="cover-dot active" data-index="0"></button>
-    <button class="cover-dot" data-index="1"></button>
-    <button class="cover-dot" data-index="2"></button>
-  </div>
+
   <div class="scroll-hint" id="scrollHint">↓ SCROLL</div>
 </section>
 
@@ -322,38 +302,12 @@ nav img{height:1.2rem;width:auto}
 </footer>
 
 <script>
-/* ═══════════ Cover Slideshow with Ken Burns ═══════════ */
-const slides = document.querySelectorAll('.cover-slide');
-const indicators = document.querySelectorAll('.cover-dot');
-let current = 0;
-let slideTimer;
-
-function goSlide(idx) {
-  if (idx === current) return;
-  // remove .show from current (fade out via opacity transition)
-  slides[current].classList.remove('show');
-  // add .show to next (fade in via opacity transition + ken burns)
-  slides[idx].classList.add('show');
-  // re-trigger ken burns animation
-  void slides[idx].offsetWidth;
-  // indicators
-  indicators[current].classList.remove('active');
-  indicators[idx].classList.add('active');
-  current = idx;
-  resetTimer();
+/* ═══════════ Cover Video ═══════════ */
+const coverVideo = document.getElementById('coverVideo');
+// Ensure autoplay works
+if (coverVideo) {
+  coverVideo.play().catch(() => {});
 }
-
-function resetTimer() {
-  clearInterval(slideTimer);
-  slideTimer = setInterval(() => goSlide((current + 1) % slides.length), 6500);
-}
-
-indicators.forEach(dot => {
-  dot.addEventListener('click', () => goSlide(parseInt(dot.dataset.index)));
-});
-
-// start: first slide already has .show in HTML
-slideTimer = setInterval(() => goSlide((current + 1) % slides.length), 6500);
 
 /* ═══════════ Page Tracking ═══════════ */
 const pages = document.querySelectorAll('.page, .footer-page');
