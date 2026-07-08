@@ -444,22 +444,6 @@ const folderCounts = {
   "江苏卫视跨年":4
 };
 
-// 获取文件夹内图片列表（通过已知数量生成）
-function getImages(folder){
-  if(!folder) return [];
-  const count = folderCounts[folder] || 0;
-  const images = [];
-  for(let i=1;i<=count;i++){
-    images.push(`images/works/${folder}/${i}.${folder==='披荆斩棘'||folder==='B站跨年'||folder==='王者荣耀盛典'||folder==='声生不息'||folder==='青年π计划'||folder==='乘风破浪'||folder==='歌手'? extension(folder,i):extension(folder,i)}`);
-  }
-  return images;
-}
-
-function extension(folder,i){
-  // 我们不知道扩展名，用onerror回退
-  return 'jpg';
-}
-
 const grid = document.getElementById('worksGrid');
 projects.forEach(p => {
   const card = document.createElement('div');
@@ -467,16 +451,16 @@ projects.forEach(p => {
   
   if(p.folder && folderCounts[p.folder]){
     const count = folderCounts[p.folder];
-    // 构建图片URL列表
+    // 构建图片URL列表，统一用 .jpg，中文路径用 encodeURI
     const imgList = [];
     for(let i=1;i<=count;i++){
-      imgList.push(`images/works/${p.folder}/${i}`);
+      imgList.push(encodeURI(`images/works/${p.folder}/${i}.jpg`));
     }
     
     if(count === 1){
       card.innerHTML = `
         <div class="work-card-img single">
-          <img data-src="${imgList[0]}" alt="${p.title}" loading="lazy">
+          <img src="${imgList[0]}" alt="${p.title}" loading="lazy" onload="this.classList.add('loaded')">
         </div>
         <div class="work-card-info">
           <div class="title">${p.title}</div>
@@ -485,7 +469,7 @@ projects.forEach(p => {
     } else {
       let galleryHTML = '<div class="work-gallery">';
       imgList.forEach(src => {
-        galleryHTML += `<div class="work-gallery-item"><img data-src="${src}" alt="${p.title}" loading="lazy"></div>`;
+        galleryHTML += `<div class="work-gallery-item"><img src="${src}" alt="${p.title}" loading="lazy" onload="this.classList.add('loaded')"></div>`;
       });
       galleryHTML += '</div>';
       card.innerHTML = `
@@ -506,30 +490,6 @@ projects.forEach(p => {
       </div>`;
   }
   grid.appendChild(card);
-});
-
-// 尝试加载图片，自动探测扩展名（jpg/png/jpeg）
-document.querySelectorAll('img[data-src]').forEach(img => {
-  const baseSrc = img.dataset.src;
-  const exts = ['jpg','jpeg','png'];
-  let idx = 0;
-  function tryLoad(){
-    if(idx >= exts.length){
-      img.parentElement.style.background = '#111';
-      return;
-    }
-    img.onload = () => {
-      img.classList.add('loaded');
-      img.dataset.src = '';
-    };
-    img.onerror = () => {
-      idx++;
-      if(idx < exts.length) tryLoad();
-      else img.parentElement.style.background = '#111';
-    };
-    img.src = baseSrc + '.' + exts[idx];
-  }
-  tryLoad();
 });
 </script>
 
