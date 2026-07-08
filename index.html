@@ -191,10 +191,9 @@ nav img{height:1.2rem;width:auto}
 }
 .work-card-img img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity 0.5s;
+  transition:transform 0.8s;
 }
-.work-card-img img.loaded{opacity:1}
-.work-card:hover .work-card-img img.loaded{transform:scale(1.03);transition:transform 0.8s}
+.work-card:hover .work-card-img img{transform:scale(1.03)}
 .work-card-info{display:flex;justify-content:space-between;align-items:baseline}
 .work-card-info .title{font-size:clamp(0.75rem,1.2vw,0.875rem);line-height:1.3}
 .work-card-info .meta{font-size:clamp(0.625rem,1vw,0.75rem);color:rgba(255,255,255,0.2)}
@@ -213,10 +212,9 @@ nav img{height:1.2rem;width:auto}
 }
 .work-gallery-item img{
   width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity 0.5s,transform 0.8s;
+  transition:transform 0.8s;
 }
-.work-gallery-item img.loaded{opacity:1}
-.work-gallery-item:hover img.loaded{transform:scale(1.03)}
+.work-gallery-item:hover img{transform:scale(1.03)}
 @media(min-width:768px){
   .work-gallery{grid-template-columns:repeat(3,1fr)}
 }
@@ -460,7 +458,7 @@ projects.forEach(p => {
     if(count === 1){
       card.innerHTML = `
         <div class="work-card-img single">
-          <img src="${imgList[0]}" alt="${p.title}" loading="lazy" onload="this.classList.add('loaded')">
+          <img src="${imgList[0]}" alt="${p.title}" loading="lazy">
         </div>
         <div class="work-card-info">
           <div class="title">${p.title}</div>
@@ -469,7 +467,7 @@ projects.forEach(p => {
     } else {
       let galleryHTML = '<div class="work-gallery">';
       imgList.forEach(src => {
-        galleryHTML += `<div class="work-gallery-item"><img src="${src}" alt="${p.title}" loading="lazy" onload="this.classList.add('loaded')"></div>`;
+        galleryHTML += `<div class="work-gallery-item"><img src="${src}" alt="${p.title}" loading="lazy"></div>`;
       });
       galleryHTML += '</div>';
       card.innerHTML = `
