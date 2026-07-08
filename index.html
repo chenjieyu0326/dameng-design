@@ -24,203 +24,72 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-html{
-  font-size:16px;-webkit-font-smoothing:antialiased;
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-}
+
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:auto}
 html::-webkit-scrollbar{width:0}
-body{
-  font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;
-  background:#000;color:#fff;
-}
+body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#000;color:#fff}
 
 /* ── Nav ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;justify-content:space-between;align-items:flex-start;
-  padding:1.25rem;mix-blend-mode:difference;color:#fff;
-  pointer-events:none;
-}
-nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
-nav a:hover{opacity:0.3}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem;mix-blend-mode:difference;color:#fff;pointer-events:none}
+nav a,nav button{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em;background:none;border:none;color:inherit;cursor:pointer;font-family:inherit}
+nav a:hover,nav button:hover{opacity:0.3}
 nav a.active{opacity:0.6}
 @media(min-width:1024px){nav{padding:1.25rem 2.5rem}}
 nav img{height:1.2rem;width:auto}
 @media(min-width:1024px){nav img{height:1.6rem}}
 
 /* ── Page dots ── */
-.page-dots{
-  position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:100;
-  display:flex;flex-direction:column;gap:0.75rem;
-  mix-blend-mode:difference;
-}
-.page-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,0.25);
-  border:none;cursor:pointer;padding:0;transition:all 0.3s;
-}
+.page-dots{position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:0.75rem;mix-blend-mode:difference}
+.page-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);border:none;cursor:pointer;padding:0;transition:all 0.3s}
 .page-dot:hover,.page-dot.active{background:#fff;transform:scale(1.5)}
 
-/* ═══════ Page: Snap Sections ═══════ */
-.page{
-  min-height:100vh;
-  min-height:100svh;
-  scroll-snap-align:start;
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
+/* ═══════ Snap Pages ═══════ */
+.page{min-height:100vh;min-height:100svh;scroll-snap-align:start;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 
-/* ── Cover Page ── */
+/* ── Cover ── */
 .cover-page{background:#000}
-
-/* Cover video */
-.cover-video{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  z-index:0;
-}
-
-.cover-overlay{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.7) 100%);
-  pointer-events:none;
-}
-.cover-content{
-  position:relative;z-index:2;text-align:center;
-}
-.cover-content img{
-  width:min(65vw,360px);height:auto;margin:0 auto;
-  opacity:0.85;
-  animation:fadeUp 2s ease-out 0.3s both;
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.cover-tagline{
-  margin-top:1.5rem;
-  font-size:clamp(0.6rem,1vw,0.72rem);
-  letter-spacing:0.15em;
-  color:rgba(255,255,255,0.3);
-  animation:fadeUp 2s ease-out 0.8s both;
-}
-
-/* Slide indicators on cover */
-.cover-indicators{
-  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;
-  display:flex;gap:0.75rem;
-}
-.cover-dot{
-  width:8px;height:8px;border-radius:50%;
-  border:1px solid rgba(255,255,255,0.3);
-  background:transparent;cursor:pointer;padding:0;
-  transition:all 0.3s;
-}
-.cover-dot.active{background:#fff;border-color:#fff}
-
-/* Scroll hint */
-.scroll-hint{
-  position:absolute;bottom:5rem;left:50%;z-index:10;
-  transform:translateX(-50%);
-  color:rgba(255,255,255,0.25);
-  font-size:0.65rem;letter-spacing:0.1em;
-  animation:pulse 2.5s ease-in-out infinite;
-  pointer-events:none;
-}
-@keyframes pulse{
-  0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}
-  50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}
-}
+.cover-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.cover-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.7) 100%);pointer-events:none}
+.cover-content{position:relative;z-index:2;text-align:center}
+.cover-content img{width:min(65vw,360px);height:auto;margin:0 auto;opacity:0.85;animation:fadeUp 2s ease-out 0.3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.cover-tagline{margin-top:1.5rem;font-size:clamp(0.6rem,1vw,0.72rem);letter-spacing:0.15em;color:rgba(255,255,255,0.3);animation:fadeUp 2s ease-out 0.8s both}
+.scroll-hint{position:absolute;bottom:5rem;left:50%;z-index:10;transform:translateX(-50%);color:rgba(255,255,255,0.25);font-size:0.65rem;letter-spacing:0.1em;animation:pulse 2.5s ease-in-out infinite;pointer-events:none}
+@keyframes pulse{0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}}
 
 /* ═══════ Content Pages ═══════ */
 .content-page{background:#000}
-.page-inner{max-width:min(100%,calc((100vh - 20rem) * 1.5));margin:0 auto;padding:0 1.25rem}
-@media(min-width:1024px){.page-inner{padding:0 2.5rem}}
+.page-inner{max-width:1280px;width:100%;margin:0 auto;padding:7rem 1.25rem 4rem}
+@media(min-width:1024px){.page-inner{padding:7rem 2.5rem 4rem}}
 
-.section-header{text-align:center;margin-bottom:4rem}
-.section-header h2{
-  font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;
-  letter-spacing:-0.02em;color:rgba(255,255,255,0.9);
-  margin-bottom:0.75rem;
-}
-.section-header p{
-  font-size:0.8rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:500px;margin:0 auto;
-}
-.section-divider{
-  width:30px;height:1px;background:rgba(255,255,255,0.15);margin:2rem auto 0;
-}
+.section-header{text-align:center;margin-bottom:3rem}
+.section-header h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;letter-spacing:-0.02em;color:rgba(255,255,255,0.9);margin-bottom:0.75rem}
+.section-header p{font-size:0.8rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:500px;margin:0 auto}
+.section-divider{width:30px;height:1px;background:rgba(255,255,255,0.15);margin:2rem auto 0}
+
+/* ── Works Grid (封面卡片) ── */
+.works-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+@media(min-width:768px){.works-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.works-grid{grid-template-columns:repeat(4,1fr)}}
+
+.work-cover{position:relative;overflow:hidden;background:#111;aspect-ratio:4/3;cursor:pointer}
+.work-cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.6);transition:filter 0.5s ease,transform 0.6s ease}
+.work-cover:hover img{filter:grayscale(0) brightness(1);transform:scale(1.04)}
+.work-cover-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);transition:opacity 0.3s}
+.work-cover-title{font-size:0.85rem;font-weight:500;color:#fff;line-height:1.3}
+.work-cover-meta{font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:2px}
+.work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#111;color:rgba(255,255,255,0.15);font-size:0.9rem}
 
 /* ── About ── */
-.about-grid{
-  display:grid;grid-template-columns:1fr;gap:3rem;
-  align-items:start;
-}
-@media(min-width:768px){
-  .about-grid{grid-template-columns:1fr 2fr;gap:0}
-}
-.about-photo{
-  width:100%;aspect-ratio:3/4;background:#111;
-  display:flex;align-items:center;justify-content:center;
-  color:rgba(255,255,255,0.1);font-size:3rem;
-  border-radius:2px;overflow:hidden;
-}
-.about-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
+@media(min-width:768px){.about-grid{grid-template-columns:1fr 2fr;gap:0}}
+.about-photo{width:100%;aspect-ratio:3/4;background:#111;border-radius:2px;overflow:hidden}
+.about-photo img{width:100%;height:100%;object-fit:cover}
 .about-text{padding:0}
 @media(min-width:768px){.about-text{padding:0 0 0 3rem}}
 .about-text h3{font-size:1.25rem;font-weight:400;margin-bottom:0.25rem}
 .about-text .role{font-size:0.75rem;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;letter-spacing:0.04em}
 .about-text .bio{font-size:0.85rem;line-height:1.9;color:rgba(255,255,255,0.45)}
-
-/* ── Works ── */
-.works-grid{
-  display:flex;flex-direction:column;gap:1.25rem;
-}
-@media(min-width:1024px){.works-grid{gap:6.25rem}}
-.work-card{display:flex;flex-direction:column;gap:0.5rem}
-@media(min-width:1024px){.work-card{gap:0.75rem}}
-.work-card-img{
-  position:relative;overflow:hidden;background:#111;
-  border-radius:2px;aspect-ratio:1/0.6666;
-  display:flex;align-items:center;justify-content:center;
-}
-.work-card-img .placeholder{
-  color:rgba(255,255,255,0.12);font-size:clamp(1rem,2vw,1.5rem);letter-spacing:0.04em;
-}
-.work-card-img img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transition:transform 0.8s;
-}
-.work-card:hover .work-card-img img{transform:scale(1.03)}
-.work-card-info{display:flex;justify-content:space-between;align-items:baseline}
-.work-card-info .title{font-size:clamp(0.75rem,1.2vw,0.875rem);line-height:1.3}
-.work-card-info .meta{font-size:clamp(0.625rem,1vw,0.75rem);color:rgba(255,255,255,0.2)}
-
-/* Work card with single image */
-.work-card-img.single img{position:static;width:100%;height:100%;object-fit:cover}
-
-/* Work card gallery (multiple images) */
-.work-gallery{
-  display:grid;gap:2px;
-  grid-template-columns:repeat(2,1fr);
-}
-.work-gallery-item{
-  position:relative;overflow:hidden;background:#111;
-  aspect-ratio:1/0.6666;
-}
-.work-gallery-item img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform 0.8s;
-}
-.work-gallery-item:hover img{transform:scale(1.03)}
-@media(min-width:768px){
-  .work-gallery{grid-template-columns:repeat(3,1fr)}
-}
-@media(min-width:1024px){
-  .work-gallery{grid-template-columns:repeat(4,1fr)}
-}
 
 /* ── Contact ── */
 .contact-list{text-align:center;max-width:400px;margin:0 auto}
@@ -229,14 +98,24 @@ nav img{height:1.2rem;width:auto}
 .contact-list a:hover{color:rgba(255,255,255,0.7)}
 
 /* ── Footer ── */
-.footer-page{
-  min-height:auto;scroll-snap-align:start;
-  text-align:center;padding:4rem 1.25rem;
-  font-size:0.7rem;color:rgba(255,255,255,0.15);
-  background:#000;
-}
-.footer-page a{transition:opacity 0.3s}
-.footer-page a:hover{opacity:0.5}
+.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:rgba(255,255,255,0.15);background:#000}
+
+/* ── Project Detail Overlay ── */
+.project-overlay{position:fixed;inset:0;z-index:1000;background:#000;display:none;overflow-y:auto}
+.project-overlay.show{display:block}
+.project-detail{max-width:1280px;margin:0 auto;padding:5rem 1.25rem 4rem}
+@media(min-width:1024px){.project-detail{padding:5rem 2.5rem 4rem}}
+.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.5);cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit;margin-bottom:2rem}
+.project-back:hover{color:#fff}
+.project-back .arrow{font-size:1rem}
+.project-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;color:#fff;margin-bottom:0.5rem}
+.project-subtitle{font-size:0.85rem;color:rgba(255,255,255,0.4);margin-bottom:2.5rem}
+.project-gallery{display:grid;gap:4px;grid-template-columns:1fr}
+@media(min-width:768px){.project-gallery{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.project-gallery{grid-template-columns:repeat(3,1fr)}}
+.project-gallery-item{overflow:hidden;background:#111}
+.project-gallery-item img{width:100%;height:auto;display:block;transition:transform 0.6s}
+.project-gallery-item:hover img{transform:scale(1.03)}
 
 /* ── Animations ── */
 .fade-on-scroll{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
@@ -247,9 +126,11 @@ nav img{height:1.2rem;width:auto}
 
 <nav id="nav">
   <a href="#cover"><img src="images/logo-dameng-white.png" alt="大盟"></a>
-  <a href="#works">作品</a>
-  <a href="#about">关于</a>
-  <a href="#contact">联系</a>
+  <div style="display:flex;gap:1.5rem">
+    <a href="#works" class="nav-link" data-page="works">作品</a>
+    <a href="#about" class="nav-link" data-page="about">关于</a>
+    <a href="#contact" class="nav-link" data-page="contact">联系</a>
+  </div>
 </nav>
 
 <div class="page-dots" id="pageDots"></div>
@@ -264,14 +145,13 @@ nav img{height:1.2rem;width:auto}
     <img src="images/logo-dameng-white.png" alt="大盟">
     <div class="cover-tagline">STAGE LIGHTING DESIGN</div>
   </div>
-
   <div class="scroll-hint" id="scrollHint">↓ SCROLL</div>
 </section>
 
 <!-- ═══ Page 2: Works ═══ -->
 <section class="page content-page" id="works">
   <div class="page-inner">
-    <div class="section-header fade-on-scroll">
+    <div class="section-header">
       <h2>作品</h2>
       <p>演唱会 · 大型综艺 · 直播晚会<br>用光讲述每一个舞台故事</p>
       <div class="section-divider"></div>
@@ -283,12 +163,12 @@ nav img{height:1.2rem;width:auto}
 <!-- ═══ Page 3: About ═══ -->
 <section class="page content-page" id="about">
   <div class="page-inner">
-    <div class="section-header fade-on-scroll">
+    <div class="section-header">
       <h2>关于</h2>
       <p>湖南大盟文化发展有限公司，成立于2020年。<br>专注舞台灯光设计，服务国内一线卫视及视频平台。</p>
       <div class="section-divider"></div>
     </div>
-    <div class="about-grid fade-on-scroll">
+    <div class="about-grid">
       <div class="about-photo">
         <img src="images/avatar.jpg" alt="陈捷予" loading="lazy">
       </div>
@@ -307,11 +187,11 @@ nav img{height:1.2rem;width:auto}
 <!-- ═══ Page 4: Contact ═══ -->
 <section class="page content-page" id="contact">
   <div class="page-inner">
-    <div class="section-header fade-on-scroll">
+    <div class="section-header">
       <h2>联系</h2>
       <div class="section-divider"></div>
     </div>
-    <div class="contact-list fade-on-scroll">
+    <div class="contact-list">
       <p>长沙 · 三一大道526号<br>旺德府凯悦国际大厦704</p>
       <p><a href="tel:18670918666">186-7091-8666</a></p>
       <p><a href="mailto:www.44288183@qq.com">www.44288183@qq.com</a></p>
@@ -324,29 +204,28 @@ nav img{height:1.2rem;width:auto}
   <p>© 2025 湖南大盟文化发展有限公司</p>
 </footer>
 
+<!-- ═══ Project Detail Overlay ═══ -->
+<div class="project-overlay" id="projectOverlay">
+  <div class="project-detail" id="projectDetail"></div>
+</div>
+
 <script>
 /* ═══════════ Cover Video ═══════════ */
 const coverVideo = document.getElementById('coverVideo');
-// Ensure autoplay works
-if (coverVideo) {
-  coverVideo.play().catch(() => {});
-}
+if (coverVideo) coverVideo.play().catch(() => {});
 
 /* ═══════════ Page Tracking ═══════════ */
 const pages = document.querySelectorAll('.page, .footer-page');
 const pageIds = ['cover','works','about','contact'];
-const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const navLinks = document.querySelectorAll('.nav-link');
 const scrollHint = document.getElementById('scrollHint');
-
-// build page dots
 const dotsContainer = document.getElementById('pageDots');
+
 pageIds.forEach((id, i) => {
   const dot = document.createElement('button');
   dot.className = 'page-dot' + (i === 0 ? ' active' : '');
   dot.dataset.page = id;
-  dot.addEventListener('click', () => {
-    document.getElementById(id).scrollIntoView({behavior:'smooth'});
-  });
+  dot.addEventListener('click', () => document.getElementById(id).scrollIntoView({behavior:'smooth'}));
   dotsContainer.appendChild(dot);
 });
 
@@ -355,26 +234,16 @@ const allDots = document.querySelectorAll('#pageDots .page-dot');
 
 function updateActive() {
   const st = window.scrollY;
-  const vh = window.innerHeight;
-  let best = 0;
-  let bestDist = Infinity;
-
+  let best = 0, bestDist = Infinity;
   pages.forEach((p, i) => {
     const idx = i < pages.length - 1 ? i : pageIds.length - 1;
-    const top = p.offsetTop;
-    const dist = Math.abs(st - top);
+    const dist = Math.abs(st - p.offsetTop);
     if (dist < bestDist) { bestDist = dist; best = idx; }
   });
-
   if (best !== lastPage) {
     lastPage = best;
-    // nav
-    navLinks.forEach((a,i) => {
-      a.classList.toggle('active', i === best);
-    });
-    // dots
+    navLinks.forEach((a,i) => a.classList.toggle('active', i === best));
     allDots.forEach((d,i) => d.classList.toggle('active', i === best));
-    // scroll hint
     if (scrollHint) {
       scrollHint.style.opacity = best === 0 ? '1' : '0';
       scrollHint.style.pointerEvents = best === 0 ? 'auto' : 'none';
@@ -384,110 +253,121 @@ function updateActive() {
 window.addEventListener('scroll', updateActive, {passive:true});
 updateActive();
 
-/* ═══════════ Fade on scroll ═══════════ */
-const fadeObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
+/* nav link smooth scroll */
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById(link.dataset.page);
+    if (target) target.scrollIntoView({behavior:'smooth'});
   });
-}, {threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+});
 
-document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(el));
-
-/* ═══════════ Works ═══════════ */
+/* ═══════════ Works Data ═══════════ */
 const projects = [
-  {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘"},
-  {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪"},
-  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息"},
-  {title:"歌手",subtitle:"2024巅峰之夜 / 2025",folder:"歌手"},
-  {title:"王者荣耀周年音乐盛典",subtitle:"2020-2025",folder:"王者荣耀盛典"},
-  {title:"B站跨年晚会",subtitle:"2021-2026",folder:"B站跨年"},
-  {title:"青年π计划",subtitle:"第1季",folder:"青年π计划"},
-  {title:"爱乐之都",subtitle:"第1季",folder:"爱乐之都"},
-  {title:"明日之子",subtitle:"第3/4/5季",folder:"明日之子"},
-  {title:"湖南卫视跨年晚会",subtitle:"2021-2022",folder:"湖南卫视跨年"},
-  {title:"青春芒果夜",subtitle:"2024-2025",folder:"青春芒果夜"},
-  {title:"刘德华·把我唱给你听",subtitle:"抖音线上演唱会",folder:"刘德华演唱会"},
-  {title:"RISE全国巡演",subtitle:"",folder:"RISE巡演"},
-  {title:"抖音小年夜",subtitle:"2024-2025晚会",folder:"抖音小年夜"},
-  {title:"四川卫视跨年晚会",subtitle:"2025",folder:"四川卫视跨年"},
-  {title:"明星大侦探新春演唱会",subtitle:"2020-2023",folder:"大侦探音乐会"},
-  {title:"和平精英总决赛中场秀",subtitle:"2022 / 2023",folder:"和平精英中场秀"},
-  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会"},
-  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会"},
-  {title:"毛不易·生日演唱会",subtitle:"2024",folder:"毛不易演唱会"},
-  {title:"腾讯视频星光大赏",subtitle:"2023 / 2025",folder:"腾讯星光大赏"},
-  {title:"音乐缘计划年度盛典",subtitle:"Ⅱ",folder:"音乐缘计划"},
-  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年"},
-  // 无图片的项目
-  {title:"火星情报局",subtitle:"第2/3/4/5/7季",folder:""},
-  {title:"我是特优生",subtitle:"第1季",folder:""},
-  {title:"炙热的我们",subtitle:"",folder:""},
-  {title:"抖音直播嘉年华",subtitle:"2022",folder:""},
-  {title:"央视网络春晚",subtitle:"2019-2021",folder:""},
-  {title:"腾讯家族年年年夜饭",subtitle:"2021-2022",folder:""},
-  {title:"阅文IP盛典",subtitle:"2023 / 2024",folder:""},
-  {title:"川渝春晚",subtitle:"2024",folder:""},
-  {title:"小芒种花夜",subtitle:"2021",folder:""},
-  {title:"无限X青春派对巡回演唱会",subtitle:"2024-2025",folder:""},
-  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:""},
+  {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘",count:22},
+  {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪",count:6},
+  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息",count:16},
+  {title:"歌手",subtitle:"2024巅峰之夜 / 2025",folder:"歌手",count:4},
+  {title:"王者荣耀周年音乐盛典",subtitle:"2020-2025",folder:"王者荣耀盛典",count:14},
+  {title:"B站跨年晚会",subtitle:"2021-2026",folder:"B站跨年",count:22},
+  {title:"青年π计划",subtitle:"第1季",folder:"青年π计划",count:4},
+  {title:"爱乐之都",subtitle:"第1季",folder:"爱乐之都",count:2},
+  {title:"明日之子",subtitle:"第3/4/5季",folder:"明日之子",count:2},
+  {title:"湖南卫视跨年晚会",subtitle:"2021-2022",folder:"湖南卫视跨年",count:2},
+  {title:"青春芒果夜",subtitle:"2024-2025",folder:"青春芒果夜",count:2},
+  {title:"刘德华·把我唱给你听",subtitle:"抖音线上演唱会",folder:"刘德华演唱会",count:2},
+  {title:"RISE全国巡演",subtitle:"",folder:"RISE巡演",count:4},
+  {title:"抖音小年夜",subtitle:"2024-2025晚会",folder:"抖音小年夜",count:2},
+  {title:"四川卫视跨年晚会",subtitle:"2025",folder:"四川卫视跨年",count:2},
+  {title:"明星大侦探新春演唱会",subtitle:"2020-2023",folder:"大侦探音乐会",count:6},
+  {title:"和平精英总决赛中场秀",subtitle:"2022 / 2023",folder:"和平精英中场秀",count:2},
+  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:2},
+  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:2},
+  {title:"毛不易·生日演唱会",subtitle:"2024",folder:"毛不易演唱会",count:2},
+  {title:"腾讯视频星光大赏",subtitle:"2023 / 2025",folder:"腾讯星光大赏",count:4},
+  {title:"音乐缘计划年度盛典",subtitle:"Ⅱ",folder:"音乐缘计划",count:4},
+  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年",count:4},
+  // 无图片
+  {title:"火星情报局",subtitle:"第2/3/4/5/7季",folder:"",count:0},
+  {title:"我是特优生",subtitle:"第1季",folder:"",count:0},
+  {title:"炙热的我们",subtitle:"",folder:"",count:0},
+  {title:"抖音直播嘉年华",subtitle:"2022",folder:"",count:0},
+  {title:"央视网络春晚",subtitle:"2019-2021",folder:"",count:0},
+  {title:"腾讯家族年年年夜饭",subtitle:"2021-2022",folder:"",count:0},
+  {title:"阅文IP盛典",subtitle:"2023 / 2024",folder:"",count:0},
+  {title:"川渝春晚",subtitle:"2024",folder:"",count:0},
+  {title:"小芒种花夜",subtitle:"2021",folder:"",count:0},
+  {title:"无限X青春派对巡回演唱会",subtitle:"2024-2025",folder:"",count:0},
+  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"",count:0},
 ];
 
-// 预先定义每个项目文件夹的图片数量
-const folderCounts = {
-  "披荆斩棘":22,"乘风破浪":6,"声生不息":16,"歌手":4,"王者荣耀盛典":14,
-  "B站跨年":22,"青年π计划":4,"爱乐之都":2,"明日之子":2,"湖南卫视跨年":2,
-  "青春芒果夜":2,"刘德华演唱会":2,"RISE巡演":4,"抖音小年夜":2,
-  "四川卫视跨年":2,"大侦探音乐会":6,"和平精英中场秀":2,"檀健次演唱会":2,
-  "易烊千玺演唱会":2,"毛不易演唱会":2,"腾讯星光大赏":4,"音乐缘计划":4,
-  "江苏卫视跨年":4
-};
-
+/* ═══════════ Render Works Grid ═══════════ */
 const grid = document.getElementById('worksGrid');
-projects.forEach(p => {
+projects.forEach((p, idx) => {
   const card = document.createElement('div');
-  card.className = 'work-card';
+  card.className = 'work-cover';
   
-  if(p.folder && folderCounts[p.folder]){
-    const count = folderCounts[p.folder];
-    // 构建图片URL列表，统一用 .jpg，中文路径用 encodeURI
-    const imgList = [];
-    for(let i=1;i<=count;i++){
-      imgList.push(encodeURI(`images/works/${p.folder}/${i}.jpg`));
-    }
-    
-    if(count === 1){
-      card.innerHTML = `
-        <div class="work-card-img single">
-          <img src="${imgList[0]}" alt="${p.title}" loading="lazy">
-        </div>
-        <div class="work-card-info">
-          <div class="title">${p.title}</div>
-          <div class="meta">${p.subtitle || ''}</div>
-        </div>`;
-    } else {
-      let galleryHTML = '<div class="work-gallery">';
-      imgList.forEach(src => {
-        galleryHTML += `<div class="work-gallery-item"><img src="${src}" alt="${p.title}" loading="lazy"></div>`;
-      });
-      galleryHTML += '</div>';
-      card.innerHTML = `
-        ${galleryHTML}
-        <div class="work-card-info" style="margin-top:0.5rem">
-          <div class="title">${p.title}</div>
-          <div class="meta">${p.subtitle || ''}</div>
-        </div>`;
-    }
+  if(p.folder && p.count > 0){
+    const coverSrc = encodeURI(`images/works/${p.folder}/1.jpg`);
+    card.innerHTML = `
+      <img src="${coverSrc}" alt="${p.title}" loading="lazy">
+      <div class="work-cover-overlay">
+        <div class="work-cover-title">${p.title}</div>
+        <div class="work-cover-meta">${p.subtitle || ''}</div>
+      </div>`;
+    card.addEventListener('click', () => openProject(idx));
   } else {
     card.innerHTML = `
-      <div class="work-card-img">
-        <div class="placeholder">${p.title}</div>
-      </div>
-      <div class="work-card-info">
-        <div class="title">${p.title}</div>
-        <div class="meta">${p.subtitle || ''}</div>
+      <div class="work-cover-noimg">${p.title}</div>
+      <div class="work-cover-overlay">
+        <div class="work-cover-title">${p.title}</div>
+        <div class="work-cover-meta">${p.subtitle || ''}</div>
       </div>`;
   }
   grid.appendChild(card);
+});
+
+/* ═══════════ Project Detail Overlay ═══════════ */
+const overlay = document.getElementById('projectOverlay');
+const detail = document.getElementById('projectDetail');
+
+function openProject(idx) {
+  const p = projects[idx];
+  if (!p.folder || p.count === 0) return;
+  
+  let galleryHTML = '';
+  for (let i = 1; i <= p.count; i++) {
+    const src = encodeURI(`images/works/${p.folder}/${i}.jpg`);
+    galleryHTML += `<div class="project-gallery-item"><img src="${src}" alt="${p.title} ${i}" loading="lazy"></div>`;
+  }
+  
+  detail.innerHTML = `
+    <button class="project-back" onclick="closeProject()">
+      <span class="arrow">←</span> 返回作品
+    </button>
+    <h1 class="project-title">${p.title}</h1>
+    <div class="project-subtitle">${p.subtitle || ''}</div>
+    <div class="project-gallery">${galleryHTML}</div>
+  `;
+  
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  overlay.scrollTop = 0;
+}
+
+function closeProject() {
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ESC关闭
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProject();
+});
+
+// 点击overlay背景关闭
+overlay.addEventListener('click', e => {
+  if (e.target === overlay) closeProject();
 });
 </script>
 
