@@ -8,18 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-@font-face {
-  font-family: 'TaipeiSansTC';
-  src: url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'TaipeiSansTC';
-  src: url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
-}
+@font-face{font-family:'TaipeiSansTC';src:url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'TaipeiSansTC';src:url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 img{display:block;max-width:100%}
@@ -29,17 +19,13 @@ html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;sc
 html::-webkit-scrollbar{width:0}
 body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#fff;color:#111}
 
-/* ── Nav ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem;color:#fff;pointer-events:none;transition:color 0.3s}
-nav.scrolled{color:#111;mix-blend-mode:normal;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
-nav .nav-left{display:flex;align-items:center;gap:2rem;pointer-events:auto}
-nav .nav-right{display:flex;gap:2.5rem;pointer-events:auto}
-nav a,nav button{transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em;background:none;border:none;color:inherit;cursor:pointer;font-family:inherit}
-nav a:hover,nav button:hover{opacity:0.3}
+/* ── Nav: 四个元素 space-between 平铺 ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;color:#fff;pointer-events:none;transition:color 0.3s,background 0.3s}
+nav.scrolled{color:#111;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
+nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
+nav a:hover{opacity:0.4}
 nav a.active{opacity:0.5}
-@media(min-width:1024px){nav{padding:1.25rem 2.5rem}}
-nav img{height:1.2rem;width:auto}
-@media(min-width:1024px){nav img{height:1.6rem}}
+nav img{height:1.4rem;width:auto}
 
 /* ── Page dots ── */
 .page-dots{position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:0.75rem;mix-blend-mode:difference}
@@ -62,29 +48,35 @@ nav img{height:1.2rem;width:auto}
 
 /* ═══════ Content Pages ═══════ */
 .content-page{background:#fff}
-.page-inner{max-width:1600px;width:100%;margin:0 auto;padding:7rem 0 4rem}
-@media(min-width:1024px){.page-inner{padding:7rem 2.5rem 4rem}}
+.page-inner{max-width:1600px;width:100%;margin:0 auto;padding:6rem 2.5rem 4rem}
 
-.section-header{text-align:center;margin-bottom:3rem}
+.section-header{text-align:center;margin-bottom:4rem}
 .section-header h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;letter-spacing:-0.02em;color:#111;margin-bottom:0.75rem}
 .section-header p{font-size:0.8rem;color:#999;line-height:1.7;max-width:500px;margin:0 auto}
 .section-divider{width:30px;height:1px;background:#ddd;margin:2rem auto 0}
 
-/* ── Works List (居中留白) ── */
-.works-list{display:flex;flex-direction:column;gap:6rem;max-width:1200px;margin:0 auto}
+/* ── Works List: Es Devlin 风格 ── */
+/* 图片占页面宽度约65%，居中，两侧留白 */
+/* 间距≈图片高度（约等于图片自身高度的间距） */
+.works-list{display:flex;flex-direction:column;gap:0;max-width:960px;margin:0 auto}
 
-.work-cover{position:relative;overflow:hidden;background:#f5f5f5;width:100%;aspect-ratio:16/9;cursor:pointer}
+.work-item{margin-bottom:12rem}
+.work-item:last-child{margin-bottom:0}
+
+/* 图片容器：不设 overflow:hidden 在外层，标题放在外面 */
+.work-cover{display:block;width:100%;aspect-ratio:16/9;overflow:hidden;background:#f5f5f5;cursor:pointer;position:relative}
 .work-cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.7);transition:filter 0.6s ease,transform 0.8s ease}
 .work-cover:hover img{filter:grayscale(0) brightness(1);transform:scale(1.02)}
-.work-cover-info{display:flex;justify-content:space-between;align-items:baseline;margin-top:1.25rem;padding:0 0.25rem}
-.work-cover-title{font-size:0.95rem;font-weight:400;color:#333;line-height:1.3}
-.work-cover-meta{font-size:0.78rem;color:#aaa}
 .work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f5f5f5;color:#ccc;font-size:1.1rem}
 
+/* 标题在图片下方，独立元素，不会被 overflow:hidden 裁掉 */
+.work-title{margin-top:1.5rem;font-size:0.9rem;font-weight:400;color:#333;line-height:1.3}
+.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#aaa}
+
 /* ── About ── */
-.about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:1200px;margin:0 auto}
+.about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:960px;margin:0 auto}
 @media(min-width:768px){.about-grid{grid-template-columns:1fr 2fr;gap:0}}
-.about-photo{width:100%;aspect-ratio:3/4;background:#f5f5f5;border-radius:2px;overflow:hidden}
+.about-photo{width:100%;aspect-ratio:3/4;background:#f5f5f5;overflow:hidden}
 .about-photo img{width:100%;height:100%;object-fit:cover}
 .about-text{padding:0}
 @media(min-width:768px){.about-text{padding:0 0 0 3rem}}
@@ -104,8 +96,7 @@ nav img{height:1.2rem;width:auto}
 /* ── Project Detail Overlay ── */
 .project-overlay{position:fixed;inset:0;z-index:1000;background:#fff;display:none;overflow-y:auto}
 .project-overlay.show{display:block}
-.project-detail{max-width:1280px;margin:0 auto;padding:5rem 1.25rem 4rem}
-@media(min-width:1024px){.project-detail{padding:5rem 2.5rem 4rem}}
+.project-detail{max-width:1200px;margin:0 auto;padding:5rem 2.5rem 4rem}
 .project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#999;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit;margin-bottom:2rem}
 .project-back:hover{color:#111}
 .project-back .arrow{font-size:1rem}
@@ -125,15 +116,12 @@ nav img{height:1.2rem;width:auto}
 </head>
 <body>
 
+<!-- Nav: 四个元素平铺 space-between -->
 <nav id="nav">
-  <div class="nav-left">
-    <a href="#cover"><img src="images/logo-dameng-white.png" alt="大盟"></a>
-    <a href="#works" class="nav-link" data-page="works">作品</a>
-  </div>
-  <div class="nav-right">
-    <a href="#about" class="nav-link" data-page="about">关于</a>
-    <a href="#contact" class="nav-link" data-page="contact">联系</a>
-  </div>
+  <a href="#cover"><img src="images/logo-dameng-white.png" alt="大盟"></a>
+  <a href="#works" class="nav-link" data-page="works">作品</a>
+  <a href="#about" class="nav-link" data-page="about">关于</a>
+  <a href="#contact" class="nav-link" data-page="contact">联系</a>
 </nav>
 
 <div class="page-dots" id="pageDots"></div>
@@ -223,6 +211,7 @@ const pageIds = ['cover','works','about','contact'];
 const navLinks = document.querySelectorAll('.nav-link');
 const scrollHint = document.getElementById('scrollHint');
 const dotsContainer = document.getElementById('pageDots');
+const navEl = document.getElementById('nav');
 
 pageIds.forEach((id, i) => {
   const dot = document.createElement('button');
@@ -245,25 +234,19 @@ function updateActive() {
   });
   if (best !== lastPage) {
     lastPage = best;
-    // nav: cover=0 has no nav-link, works=1, about=2, contact=3
-    navLinks.forEach(a => {
-      a.classList.toggle('active', a.dataset.page === pageIds[best]);
-    });
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.page === pageIds[best]));
     allDots.forEach((d,i) => d.classList.toggle('active', i === best));
     if (scrollHint) {
       scrollHint.style.opacity = best === 0 ? '1' : '0';
       scrollHint.style.pointerEvents = best === 0 ? 'auto' : 'none';
     }
-    // Nav color: white on cover, dark on other pages
-    const navEl = document.getElementById('nav');
-    if (best === 0) { navEl.classList.remove('scrolled'); }
-    else { navEl.classList.add('scrolled'); }
+    if (best === 0) navEl.classList.remove('scrolled');
+    else navEl.classList.add('scrolled');
   }
 }
 window.addEventListener('scroll', updateActive, {passive:true});
 updateActive();
 
-/* nav link smooth scroll */
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -271,6 +254,12 @@ navLinks.forEach(link => {
     if (target) target.scrollIntoView({behavior:'smooth'});
   });
 });
+
+/* ═══════════ Fade on scroll ═══════════ */
+const fadeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(el));
 
 /* ═══════════ Works Data ═══════════ */
 const projects = [
@@ -297,7 +286,6 @@ const projects = [
   {title:"腾讯视频星光大赏",subtitle:"2023 / 2025",folder:"腾讯星光大赏",count:4},
   {title:"音乐缘计划年度盛典",subtitle:"Ⅱ",folder:"音乐缘计划",count:4},
   {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年",count:4},
-  // 无图片
   {title:"火星情报局",subtitle:"第2/3/4/5/7季",folder:"",count:0},
   {title:"我是特优生",subtitle:"第1季",folder:"",count:0},
   {title:"炙热的我们",subtitle:"",folder:"",count:0},
@@ -311,30 +299,39 @@ const projects = [
   {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"",count:0},
 ];
 
-/* ═══════════ Render Works Grid ═══════════ */
+/* ═══════════ Render Works ═══════════ */
+/* 结构: .work-item > .work-cover(img) + .work-title + .work-meta */
+/* 标题在图片容器外面，不会被 overflow:hidden 裁掉 */
 const grid = document.getElementById('worksGrid');
 projects.forEach((p, idx) => {
-  const card = document.createElement('div');
-  card.className = 'work-cover';
+  const item = document.createElement('div');
+  item.className = 'work-item';
+  
+  // 图片容器
+  const cover = document.createElement('div');
+  cover.className = 'work-cover';
   
   if(p.folder && p.count > 0){
     const coverSrc = encodeURI(`images/works/${p.folder}/1.jpg`);
-    card.innerHTML = `
-      <img src="${coverSrc}" alt="${p.title}" loading="lazy">
-      <div class="work-cover-info">
-        <div class="work-cover-title">${p.title}</div>
-        <div class="work-cover-meta">${p.subtitle || ''}</div>
-      </div>`;
-    card.addEventListener('click', () => openProject(idx));
+    cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy">`;
+    cover.addEventListener('click', () => openProject(idx));
   } else {
-    card.innerHTML = `
-      <div class="work-cover-noimg">${p.title}</div>
-      <div class="work-cover-info">
-        <div class="work-cover-title">${p.title}</div>
-        <div class="work-cover-meta">${p.subtitle || ''}</div>
-      </div>`;
+    cover.innerHTML = `<div class="work-cover-noimg">${p.title}</div>`;
   }
-  grid.appendChild(card);
+  
+  // 标题在图片外面
+  const title = document.createElement('div');
+  title.className = 'work-title';
+  title.textContent = p.title;
+  
+  const meta = document.createElement('div');
+  meta.className = 'work-meta';
+  meta.textContent = p.subtitle || '';
+  
+  item.appendChild(cover);
+  item.appendChild(title);
+  item.appendChild(meta);
+  grid.appendChild(item);
 });
 
 /* ═══════════ Project Detail Overlay ═══════════ */
@@ -370,12 +367,10 @@ function closeProject() {
   document.body.style.overflow = '';
 }
 
-// ESC关闭
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeProject();
 });
 
-// 点击overlay背景关闭
 overlay.addEventListener('click', e => {
   if (e.target === overlay) closeProject();
 });
