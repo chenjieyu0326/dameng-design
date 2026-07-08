@@ -199,6 +199,31 @@ nav img{height:1.2rem;width:auto}
 .work-card-info .title{font-size:clamp(0.75rem,1.2vw,0.875rem);line-height:1.3}
 .work-card-info .meta{font-size:clamp(0.625rem,1vw,0.75rem);color:rgba(255,255,255,0.2)}
 
+/* Work card with single image */
+.work-card-img.single img{position:static;width:100%;height:100%;object-fit:cover}
+
+/* Work card gallery (multiple images) */
+.work-gallery{
+  display:grid;gap:2px;
+  grid-template-columns:repeat(2,1fr);
+}
+.work-gallery-item{
+  position:relative;overflow:hidden;background:#111;
+  aspect-ratio:1/0.6666;
+}
+.work-gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 0.5s,transform 0.8s;
+}
+.work-gallery-item img.loaded{opacity:1}
+.work-gallery-item:hover img.loaded{transform:scale(1.03)}
+@media(min-width:768px){
+  .work-gallery{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1024px){
+  .work-gallery{grid-template-columns:repeat(4,1fr)}
+}
+
 /* ── Contact ── */
 .contact-list{text-align:center;max-width:400px;margin:0 auto}
 .contact-list p{font-size:0.85rem;line-height:2;color:rgba(255,255,255,0.45)}
@@ -372,54 +397,139 @@ document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(
 
 /* ═══════════ Works ═══════════ */
 const projects = [
-  {title:"披荆斩棘",subtitle:"第1~5季"},
-  {title:"乘风破浪",subtitle:"第2/5/6季"},
-  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季"},
-  {title:"歌手",subtitle:"2024巅峰之夜 / 2025"},
-  {title:"青年π计划",subtitle:"第1季"},
-  {title:"明日之子",subtitle:"第3/4/5季"},
-  {title:"火星情报局",subtitle:"第2/3/4/5/7季"},
-  {title:"爱乐之都",subtitle:"第1季"},
-  {title:"我是特优生",subtitle:"第1季"},
-  {title:"炙热的我们",subtitle:""},
-  {title:"湖南卫视跨年晚会",subtitle:"2021-2022"},
-  {title:"B站跨年晚会",subtitle:"2021-2024"},
-  {title:"王者荣耀周年音乐盛典",subtitle:"2020-2025"},
-  {title:"和平精英总决赛中场秀",subtitle:"2022 / 2023"},
-  {title:"抖音直播嘉年华",subtitle:"2022"},
-  {title:"央视网络春晚",subtitle:"2019-2021"},
-  {title:"腾讯家族年年年夜饭",subtitle:"2021-2022"},
-  {title:"腾讯视频星光大赏",subtitle:"2023 / 2024"},
-  {title:"阅文IP盛典",subtitle:"2023 / 2024"},
-  {title:"四川卫视跨年晚会",subtitle:"2024"},
-  {title:"川渝春晚",subtitle:"2024"},
-  {title:"抖音小年夜",subtitle:"2024-2025"},
-  {title:"青春芒果夜",subtitle:"2024-2025"},
-  {title:"小芒种花夜",subtitle:"2021"},
-  {title:"明星大侦探新春演唱会",subtitle:"2020-2023"},
-  {title:"无限X青春派对巡回演唱会",subtitle:"2024-2025"},
-  {title:"RISE全国巡演",subtitle:""},
-  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会"},
-  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会"},
-  {title:"毛不易·生日演唱会",subtitle:"2024"},
-  {title:"刘德华·把我唱给你听",subtitle:"抖音线上演唱会"},
-  {title:"易烊千玺·礐壆",subtitle:"2025演唱会"},
+  {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘"},
+  {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪"},
+  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息"},
+  {title:"歌手",subtitle:"2024巅峰之夜 / 2025",folder:"歌手"},
+  {title:"王者荣耀周年音乐盛典",subtitle:"2020-2025",folder:"王者荣耀盛典"},
+  {title:"B站跨年晚会",subtitle:"2021-2026",folder:"B站跨年"},
+  {title:"青年π计划",subtitle:"第1季",folder:"青年π计划"},
+  {title:"爱乐之都",subtitle:"第1季",folder:"爱乐之都"},
+  {title:"明日之子",subtitle:"第3/4/5季",folder:"明日之子"},
+  {title:"湖南卫视跨年晚会",subtitle:"2021-2022",folder:"湖南卫视跨年"},
+  {title:"青春芒果夜",subtitle:"2024-2025",folder:"青春芒果夜"},
+  {title:"刘德华·把我唱给你听",subtitle:"抖音线上演唱会",folder:"刘德华演唱会"},
+  {title:"RISE全国巡演",subtitle:"",folder:"RISE巡演"},
+  {title:"抖音小年夜",subtitle:"2024-2025晚会",folder:"抖音小年夜"},
+  {title:"四川卫视跨年晚会",subtitle:"2025",folder:"四川卫视跨年"},
+  {title:"明星大侦探新春演唱会",subtitle:"2020-2023",folder:"大侦探音乐会"},
+  {title:"和平精英总决赛中场秀",subtitle:"2022 / 2023",folder:"和平精英中场秀"},
+  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会"},
+  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会"},
+  {title:"毛不易·生日演唱会",subtitle:"2024",folder:"毛不易演唱会"},
+  {title:"腾讯视频星光大赏",subtitle:"2023 / 2025",folder:"腾讯星光大赏"},
+  {title:"音乐缘计划年度盛典",subtitle:"Ⅱ",folder:"音乐缘计划"},
+  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年"},
+  // 无图片的项目
+  {title:"火星情报局",subtitle:"第2/3/4/5/7季",folder:""},
+  {title:"我是特优生",subtitle:"第1季",folder:""},
+  {title:"炙热的我们",subtitle:"",folder:""},
+  {title:"抖音直播嘉年华",subtitle:"2022",folder:""},
+  {title:"央视网络春晚",subtitle:"2019-2021",folder:""},
+  {title:"腾讯家族年年年夜饭",subtitle:"2021-2022",folder:""},
+  {title:"阅文IP盛典",subtitle:"2023 / 2024",folder:""},
+  {title:"川渝春晚",subtitle:"2024",folder:""},
+  {title:"小芒种花夜",subtitle:"2021",folder:""},
+  {title:"无限X青春派对巡回演唱会",subtitle:"2024-2025",folder:""},
+  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:""},
 ];
+
+// 预先定义每个项目文件夹的图片数量
+const folderCounts = {
+  "披荆斩棘":22,"乘风破浪":6,"声生不息":16,"歌手":4,"王者荣耀盛典":14,
+  "B站跨年":22,"青年π计划":4,"爱乐之都":2,"明日之子":2,"湖南卫视跨年":2,
+  "青春芒果夜":2,"刘德华演唱会":2,"RISE巡演":4,"抖音小年夜":2,
+  "四川卫视跨年":2,"大侦探音乐会":6,"和平精英中场秀":2,"檀健次演唱会":2,
+  "易烊千玺演唱会":2,"毛不易演唱会":2,"腾讯星光大赏":4,"音乐缘计划":4,
+  "江苏卫视跨年":4
+};
+
+// 获取文件夹内图片列表（通过已知数量生成）
+function getImages(folder){
+  if(!folder) return [];
+  const count = folderCounts[folder] || 0;
+  const images = [];
+  for(let i=1;i<=count;i++){
+    images.push(`images/works/${folder}/${i}.${folder==='披荆斩棘'||folder==='B站跨年'||folder==='王者荣耀盛典'||folder==='声生不息'||folder==='青年π计划'||folder==='乘风破浪'||folder==='歌手'? extension(folder,i):extension(folder,i)}`);
+  }
+  return images;
+}
+
+function extension(folder,i){
+  // 我们不知道扩展名，用onerror回退
+  return 'jpg';
+}
 
 const grid = document.getElementById('worksGrid');
 projects.forEach(p => {
   const card = document.createElement('div');
   card.className = 'work-card';
-  card.innerHTML = `
-    <div class="work-card-img">
-      <div class="placeholder">${p.title}</div>
-    </div>
-    <div class="work-card-info">
-      <div class="title">${p.title}</div>
-      <div class="meta">${p.subtitle || ''}</div>
-    </div>
-  `;
+  
+  if(p.folder && folderCounts[p.folder]){
+    const count = folderCounts[p.folder];
+    // 构建图片URL列表
+    const imgList = [];
+    for(let i=1;i<=count;i++){
+      imgList.push(`images/works/${p.folder}/${i}`);
+    }
+    
+    if(count === 1){
+      card.innerHTML = `
+        <div class="work-card-img single">
+          <img data-src="${imgList[0]}" alt="${p.title}" loading="lazy">
+        </div>
+        <div class="work-card-info">
+          <div class="title">${p.title}</div>
+          <div class="meta">${p.subtitle || ''}</div>
+        </div>`;
+    } else {
+      let galleryHTML = '<div class="work-gallery">';
+      imgList.forEach(src => {
+        galleryHTML += `<div class="work-gallery-item"><img data-src="${src}" alt="${p.title}" loading="lazy"></div>`;
+      });
+      galleryHTML += '</div>';
+      card.innerHTML = `
+        ${galleryHTML}
+        <div class="work-card-info" style="margin-top:0.5rem">
+          <div class="title">${p.title}</div>
+          <div class="meta">${p.subtitle || ''}</div>
+        </div>`;
+    }
+  } else {
+    card.innerHTML = `
+      <div class="work-card-img">
+        <div class="placeholder">${p.title}</div>
+      </div>
+      <div class="work-card-info">
+        <div class="title">${p.title}</div>
+        <div class="meta">${p.subtitle || ''}</div>
+      </div>`;
+  }
   grid.appendChild(card);
+});
+
+// 尝试加载图片，自动探测扩展名（jpg/png/jpeg）
+document.querySelectorAll('img[data-src]').forEach(img => {
+  const baseSrc = img.dataset.src;
+  const exts = ['jpg','jpeg','png'];
+  let idx = 0;
+  function tryLoad(){
+    if(idx >= exts.length){
+      img.parentElement.style.background = '#111';
+      return;
+    }
+    img.onload = () => {
+      img.classList.add('loaded');
+      img.dataset.src = '';
+    };
+    img.onerror = () => {
+      idx++;
+      if(idx < exts.length) tryLoad();
+      else img.parentElement.style.background = '#111';
+    };
+    img.src = baseSrc + '.' + exts[idx];
+  }
+  tryLoad();
 });
 </script>
 
