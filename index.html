@@ -17,11 +17,11 @@ a{color:inherit;text-decoration:none}
 
 html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:auto}
 html::-webkit-scrollbar{width:0}
-body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#fff;color:#111}
+body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#000;color:#fff}
 
 /* ── Nav: 四个元素 space-between 平铺 ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;color:#fff;pointer-events:none;transition:color 0.3s,background 0.3s}
-nav.scrolled{color:#111;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
+nav.scrolled{color:#fff;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);border-bottom:1px solid #222}
 nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
 nav a:hover{opacity:0.4}
 nav a.active{opacity:0.5}
@@ -47,12 +47,12 @@ nav img{height:1.4rem;width:auto}
 @keyframes pulse{0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}}
 
 /* ═══════ Content Pages ═══════ */
-.content-page{background:#fff}
+.content-page{background:#000}
 .page-inner{max-width:1600px;width:100%;margin:0 auto;padding:6rem 2.5rem 4rem}
 
 .section-header{text-align:center;margin-bottom:4rem}
-.section-header h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;letter-spacing:-0.02em;color:#111;margin-bottom:0.75rem}
-.section-header p{font-size:0.8rem;color:#999;line-height:1.7;max-width:500px;margin:0 auto}
+.section-header h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;letter-spacing:-0.02em;color:#fff;margin-bottom:0.75rem}
+.section-header p{font-size:0.8rem;color:#888;line-height:1.7;max-width:500px;margin:0 auto}
 .section-divider{width:30px;height:1px;background:#ddd;margin:2rem auto 0}
 
 /* ── Works List: Es Devlin 风格 ── */
@@ -65,14 +65,14 @@ nav img{height:1.4rem;width:auto}
 
 /* 图片容器：不设 overflow:hidden 在外层，标题放在外面 */
 /* 封面图跟详情页一样：最大720px，居中，不撑满宽度 */
-.work-cover{display:block;width:100%;max-width:504px;margin:0 auto;overflow:hidden;background:#f5f5f5;cursor:pointer;position:relative}
+.work-cover{display:block;width:100%;max-width:504px;margin:0 auto;overflow:hidden;background:#111;cursor:pointer;position:relative}
 .work-cover img{width:100%;height:auto;display:block;filter:grayscale(1) brightness(0.7);transition:filter 0.6s ease,transform 0.8s ease}
 .work-cover:hover img{filter:grayscale(0) brightness(1);transform:scale(1.02)}
-.work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:#f5f5f5;color:#ccc;font-size:1.1rem}
+.work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:#111;color:#666;font-size:1.1rem}
 
 /* 标题在图片下方居中 */
-.work-title{margin-top:1rem;font-size:0.9rem;font-weight:400;color:#333;line-height:1.3;text-align:center}
-.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#aaa;text-align:center}
+.work-title{margin-top:1rem;font-size:0.9rem;font-weight:400;color:#eee;line-height:1.3;text-align:center}
+.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#888;text-align:center}
 
 /* ── About ── */
 .about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:960px;margin:0 auto}
@@ -81,29 +81,29 @@ nav img{height:1.4rem;width:auto}
 .about-photo img{width:100%;height:100%;object-fit:cover}
 .about-text{padding:0}
 @media(min-width:768px){.about-text{padding:0 0 0 3rem}}
-.about-text h3{font-size:1.25rem;font-weight:400;margin-bottom:0.25rem;color:#222}
-.about-text .role{font-size:0.75rem;color:#999;margin-bottom:1.5rem;letter-spacing:0.04em}
-.about-text .bio{font-size:0.85rem;line-height:1.9;color:#666}
+.about-text h3{font-size:1.25rem;font-weight:400;margin-bottom:0.25rem;color:#fff}
+.about-text .role{font-size:0.75rem;color:#888;margin-bottom:1.5rem;letter-spacing:0.04em}
+.about-text .bio{font-size:0.85rem;line-height:1.9;color:#aaa}
 
 /* ── Contact ── */
 .contact-list{text-align:center;max-width:400px;margin:0 auto}
-.contact-list p{font-size:0.85rem;line-height:2;color:#666}
+.contact-list p{font-size:0.85rem;line-height:2;color:#aaa}
 .contact-list a{transition:color 0.2s}
-.contact-list a:hover{color:#111}
+.contact-list a:hover{color:#fff}
 
 /* ── Footer ── */
-.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#ccc;background:#fff;border-top:1px solid #eee}
+.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#666;background:#000;border-top:1px solid #222}
 
 /* ── Project Detail Overlay: 单张浏览 ── */
-.project-overlay{position:fixed;inset:0;z-index:1000;background:#fff;display:none;overflow:hidden}
+.project-overlay{position:fixed;inset:0;z-index:1000;background:#000;display:none;overflow:hidden}
 .project-overlay.show{display:flex;flex-direction:column}
 
 .project-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;flex-shrink:0}
-.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#999;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit}
-.project-back:hover{color:#111}
+.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#888;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit}
+.project-back:hover{color:#fff}
 .project-back .arrow{font-size:1rem}
-.project-header-title{font-size:0.9rem;color:#333;font-weight:400}
-.project-counter{font-size:0.8rem;color:#bbb;min-width:60px;text-align:right}
+.project-header-title{font-size:0.9rem;color:#eee;font-weight:400}
+.project-counter{font-size:0.8rem;color:#888;min-width:60px;text-align:right}
 
 /* 单张图片展示区 */
 .project-viewer{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem 5rem}
@@ -113,8 +113,8 @@ nav img{height:1.4rem;width:auto}
 .project-image-wrap img.changing{opacity:0}
 
 /* 左右翻页按钮 */
-.project-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #ddd;background:rgba(255,255,255,0.9);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#666;transition:all 0.2s;z-index:10}
-.project-nav:hover{border-color:#333;color:#111;background:#fff}
+.project-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #333;background:rgba(0,0,0,0.8);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#888;transition:all 0.2s;z-index:10}
+.project-nav:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,0.1)}
 .project-nav.prev{left:2rem}
 .project-nav.next{right:2rem}
 .project-nav:disabled{opacity:0.3;cursor:default}
@@ -124,7 +124,7 @@ nav img{height:1.4rem;width:auto}
 .project-thumb{width:48px;height:32px;flex-shrink:0;overflow:hidden;cursor:pointer;opacity:0.4;transition:opacity 0.2s;border:1px solid transparent}
 .project-thumb img{width:100%;height:100%;object-fit:cover}
 .project-thumb:hover{opacity:0.7}
-.project-thumb.active{opacity:1;border-color:#333}
+.project-thumb.active{opacity:1;border-color:#fff}
 
 @media(max-width:768px){
   .project-viewer{padding:1rem 3rem}
@@ -313,7 +313,7 @@ const projects = [
   {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
   {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
   {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"李宇春周末愉快巡演",count:11},
-  {title:"腾讯视频星光大赏",subtitle:"2023 / 2025",folder:"星光大赏",count:2},
+  {title:"腾讯视频星光大赏",subtitle:"2023-2025",folder:"星光大赏",count:2},
 ];
 
 /* ═══════════ Render Works ═══════════ */
