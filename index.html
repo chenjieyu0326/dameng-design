@@ -52,22 +52,8 @@ nav img{height:1.4rem;width:auto}
 /* ═══════ Content Pages ═══════ */
 .content-page{background:#000}
 
-/* 关于页：黑点渐变到白底 */
-#about{
-  background:#fff;
-  position:relative;
-}
-#about::before{
-  content:'';
-  position:absolute;inset:0;
-  background-image:radial-gradient(circle, #000 1.2px, transparent 1.5px);
-  background-size:18px 18px;
-  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 15%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 75%, transparent 100%);
-  mask-image:linear-gradient(to bottom, #000 0%, #000 15%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 75%, transparent 100%);
-  pointer-events:none;
-  z-index:0;
-}
-#about .page-inner{position:relative;z-index:1}
+/* 关于页：白底 */
+#about{background:#fff}
 #about .section-header h2{color:#111}
 #about .section-header p{color:#666}
 #about .about-text h3{color:#111}
