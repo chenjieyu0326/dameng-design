@@ -21,7 +21,10 @@ body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",s
 
 /* ── Nav: 四个元素 space-between 平铺 ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;color:#fff;pointer-events:none;transition:color 0.3s,background 0.3s}
+/* 导航栏在封面/作品页为深色背景，在关于/联系页为浅色背景 */
 nav.scrolled{color:#fff;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);border-bottom:1px solid #222}
+nav.scrolled.light{color:#111;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
+nav.scrolled.light .nav-link{color:#111}
 nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
 nav a:hover{opacity:0.4}
 nav a.active{opacity:0.5}
@@ -48,6 +51,35 @@ nav img{height:1.4rem;width:auto}
 
 /* ═══════ Content Pages ═══════ */
 .content-page{background:#000}
+
+/* 关于页：黑点渐变到白底 */
+#about{
+  background:#fff;
+  position:relative;
+}
+#about::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle, #000 1.2px, transparent 1.5px);
+  background-size:18px 18px;
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 15%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 75%, transparent 100%);
+  mask-image:linear-gradient(to bottom, #000 0%, #000 15%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.08) 75%, transparent 100%);
+  pointer-events:none;
+  z-index:0;
+}
+#about .page-inner{position:relative;z-index:1}
+#about .section-header h2{color:#111}
+#about .section-header p{color:#666}
+#about .about-text h3{color:#111}
+#about .about-text .role{color:#888}
+#about .about-text .bio{color:#444}
+
+/* 联系页：纯白底 */
+#contact{background:#fff}
+#contact .section-header h2{color:#111}
+#contact .section-header p{color:#666}
+#contact .contact-list p{color:#444}
+#contact .contact-list a:hover{color:#111}
 .page-inner{max-width:1600px;width:100%;margin:0 auto;padding:6rem 2.5rem 4rem}
 
 .section-header{text-align:center;margin-bottom:4rem}
@@ -92,7 +124,7 @@ nav img{height:1.4rem;width:auto}
 .contact-list a:hover{color:#fff}
 
 /* ── Footer ── */
-.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#666;background:#000;border-top:1px solid #222}
+.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#999;background:#fff;border-top:1px solid #eee}
 
 /* ── Project Detail Overlay: 单张浏览 ── */
 .project-overlay{position:fixed;inset:0;z-index:1000;background:#000;display:none;overflow:hidden}
@@ -283,6 +315,10 @@ function updateActive() {
     }
     if (best === 0) navEl.classList.remove('scrolled');
     else navEl.classList.add('scrolled');
+    
+    // 关于/联系页用浅色导航栏
+    if (best >= 3) navEl.classList.add('light');
+    else navEl.classList.remove('light');
   }
 }
 window.addEventListener('scroll', updateActive, {passive:true});
