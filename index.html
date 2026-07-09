@@ -93,21 +93,47 @@ nav img{height:1.4rem;width:auto}
 /* ── Footer ── */
 .footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#ccc;background:#fff;border-top:1px solid #eee}
 
-/* ── Project Detail Overlay ── */
-.project-overlay{position:fixed;inset:0;z-index:1000;background:#fff;display:none;overflow-y:auto}
-.project-overlay.show{display:block}
-.project-detail{max-width:1200px;margin:0 auto;padding:5rem 2.5rem 4rem}
-.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#999;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit;margin-bottom:2rem}
+/* ── Project Detail Overlay: 单张浏览 ── */
+.project-overlay{position:fixed;inset:0;z-index:1000;background:#fff;display:none;overflow:hidden}
+.project-overlay.show{display:flex;flex-direction:column}
+
+.project-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;flex-shrink:0}
+.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#999;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit}
 .project-back:hover{color:#111}
 .project-back .arrow{font-size:1rem}
-.project-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;color:#222;margin-bottom:0.5rem}
-.project-subtitle{font-size:0.85rem;color:#999;margin-bottom:2.5rem}
-.project-gallery{display:grid;gap:4px;grid-template-columns:1fr}
-@media(min-width:768px){.project-gallery{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1024px){.project-gallery{grid-template-columns:repeat(3,1fr)}}
-.project-gallery-item{overflow:hidden;background:#f5f5f5}
-.project-gallery-item img{width:100%;height:auto;display:block;transition:transform 0.6s}
-.project-gallery-item:hover img{transform:scale(1.03)}
+.project-header-title{font-size:0.9rem;color:#333;font-weight:400}
+.project-counter{font-size:0.8rem;color:#bbb;min-width:60px;text-align:right}
+
+/* 单张图片展示区 */
+.project-viewer{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem 5rem}
+
+.project-image-wrap{max-width:720px;max-height:100%;display:flex;align-items:center;justify-content:center}
+.project-image-wrap img{max-width:100%;max-height:75vh;width:auto;height:auto;object-fit:contain;display:block;transition:opacity 0.3s}
+.project-image-wrap img.changing{opacity:0}
+
+/* 左右翻页按钮 */
+.project-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #ddd;background:rgba(255,255,255,0.9);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#666;transition:all 0.2s;z-index:10}
+.project-nav:hover{border-color:#333;color:#111;background:#fff}
+.project-nav.prev{left:2rem}
+.project-nav.next{right:2rem}
+.project-nav:disabled{opacity:0.3;cursor:default}
+
+/* 底部缩略图条 */
+.project-thumbs{display:flex;gap:4px;justify-content:center;padding:1rem 2.5rem;overflow-x:auto;flex-shrink:0}
+.project-thumb{width:48px;height:32px;flex-shrink:0;overflow:hidden;cursor:pointer;opacity:0.4;transition:opacity 0.2s;border:1px solid transparent}
+.project-thumb img{width:100%;height:100%;object-fit:cover}
+.project-thumb:hover{opacity:0.7}
+.project-thumb.active{opacity:1;border-color:#333}
+
+@media(max-width:768px){
+  .project-viewer{padding:1rem 3rem}
+  .project-nav.prev{left:0.5rem}
+  .project-nav.next{right:0.5rem}
+  .project-image-wrap{max-width:100%}
+  .project-image-wrap img{max-height:60vh}
+  .project-header{padding:1rem 1.25rem}
+  .project-thumbs{padding:0.75rem 1.25rem}
+}
 
 /* ── Animations ── */
 .fade-on-scroll{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
@@ -197,7 +223,21 @@ nav img{height:1.4rem;width:auto}
 
 <!-- ═══ Project Detail Overlay ═══ -->
 <div class="project-overlay" id="projectOverlay">
-  <div class="project-detail" id="projectDetail"></div>
+  <div class="project-header">
+    <button class="project-back" onclick="closeProject()">
+      <span class="arrow">←</span> 返回作品
+    </button>
+    <div class="project-header-title" id="projectHeaderTitle"></div>
+    <div class="project-counter" id="projectCounter"></div>
+  </div>
+  <div class="project-viewer">
+    <button class="project-nav prev" id="projectPrev" onclick="changeImage(-1)">‹</button>
+    <div class="project-image-wrap">
+      <img id="projectImage" src="" alt="" onchange="">
+    </div>
+    <button class="project-nav next" id="projectNext" onclick="changeImage(1)">›</button>
+  </div>
+  <div class="project-thumbs" id="projectThumbs"></div>
 </div>
 
 <script>
@@ -310,43 +350,98 @@ projects.forEach((p, idx) => {
   grid.appendChild(item);
 });
 
-/* ═══════════ Project Detail Overlay ═══════════ */
+/* ═══════════ Project Detail: 单张浏览 ═══════════ */
 const overlay = document.getElementById('projectOverlay');
-const detail = document.getElementById('projectDetail');
+const projectImage = document.getElementById('projectImage');
+const projectHeaderTitle = document.getElementById('projectHeaderTitle');
+const projectCounter = document.getElementById('projectCounter');
+const projectThumbs = document.getElementById('projectThumbs');
+const projectPrev = document.getElementById('projectPrev');
+const projectNext = document.getElementById('projectNext');
+
+let currentProject = null;
+let currentImageIdx = 0;
 
 function openProject(idx) {
   const p = projects[idx];
   if (!p.folder || p.count === 0) return;
   
-  let galleryHTML = '';
+  currentProject = p;
+  currentImageIdx = 1;
+  
+  projectHeaderTitle.textContent = p.title;
+  
+  // 生成缩略图条
+  let thumbsHTML = '';
   for (let i = 1; i <= p.count; i++) {
     const src = encodeURI(`images/works/${p.folder}/${i}.jpg`);
-    galleryHTML += `<div class="project-gallery-item"><img src="${src}" alt="${p.title} ${i}" loading="lazy"></div>`;
+    thumbsHTML += `<div class="project-thumb${i===1?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${src}" alt="" loading="lazy"></div>`;
   }
+  projectThumbs.innerHTML = thumbsHTML;
   
-  detail.innerHTML = `
-    <button class="project-back" onclick="closeProject()">
-      <span class="arrow">←</span> 返回作品
-    </button>
-    <h1 class="project-title">${p.title}</h1>
-    <div class="project-subtitle">${p.subtitle || ''}</div>
-    <div class="project-gallery">${galleryHTML}</div>
-  `;
+  showImage(1);
   
   overlay.classList.add('show');
   document.body.style.overflow = 'hidden';
-  overlay.scrollTop = 0;
+}
+
+function showImage(idx) {
+  if (!currentProject) return;
+  currentImageIdx = idx;
+  const src = encodeURI(`images/works/${currentProject.folder}/${idx}.jpg`);
+  
+  // 淡出再淡入
+  projectImage.classList.add('changing');
+  setTimeout(() => {
+    projectImage.src = src;
+    projectImage.alt = currentProject.title + ' ' + idx;
+    projectImage.classList.remove('changing');
+  }, 150);
+  
+  // 计数器
+  projectCounter.textContent = idx + ' / ' + currentProject.count;
+  
+  // 按钮状态
+  projectPrev.disabled = (idx <= 1);
+  projectNext.disabled = (idx >= currentProject.count);
+  
+  // 缩略图高亮
+  projectThumbs.querySelectorAll('.project-thumb').forEach(t => {
+    t.classList.toggle('active', parseInt(t.dataset.idx) === idx);
+  });
+  
+  // 滚动缩略图到可见位置
+  const activeThumb = projectThumbs.querySelector('.project-thumb.active');
+  if (activeThumb) activeThumb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+
+function changeImage(dir) {
+  if (!currentProject) return;
+  const newIdx = currentImageIdx + dir;
+  if (newIdx >= 1 && newIdx <= currentProject.count) {
+    showImage(newIdx);
+  }
+}
+
+function goToImage(idx) {
+  showImage(idx);
 }
 
 function closeProject() {
   overlay.classList.remove('show');
   document.body.style.overflow = '';
+  currentProject = null;
 }
 
+// 键盘左右翻页 + ESC关闭
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeProject();
+  if (!overlay.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') changeImage(-1);
+  else if (e.key === 'ArrowRight') changeImage(1);
+  else if (e.key === 'Escape') closeProject();
 });
 
+// 点击背景关闭
 overlay.addEventListener('click', e => {
   if (e.target === overlay) closeProject();
 });
