@@ -3,471 +3,531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DA MENG · 大盟文化</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>大盟文化 · DAMENG DESIGN</title>
 <style>
-@font-face{font-family:'TaipeiSansTC';src:url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:'TaipeiSansTC';src:url('https://cdn.jsdelivr.net/gh/max32002/TaipeiSansTCBeta@2.002/webfont/TaipeiSansTCBeta-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-img{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-
-html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:auto}
-html::-webkit-scrollbar{width:0}
-body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#000;color:#fff}
-
-/* ── Nav: 四个元素 space-between 平铺 ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;color:#fff;pointer-events:none;transition:color 0.3s,background 0.3s}
-/* 导航栏在封面/作品页为深色背景，在关于/联系页为浅色背景 */
-nav.scrolled{color:#fff;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);border-bottom:1px solid #222}
-nav.scrolled.light{color:#111;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
-nav.scrolled.light .nav-link{color:#111}
-nav a{pointer-events:auto;transition:opacity 0.3s;font-size:clamp(0.875rem,1.5vw,1rem);letter-spacing:-0.01em}
-nav a:hover{opacity:0.4}
-nav a.active{opacity:0.5}
-nav img{height:1.4rem;width:auto}
-
-/* ── Page dots ── */
-.page-dots{position:fixed;right:1.2rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:0.75rem;mix-blend-mode:difference}
-.page-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);border:none;cursor:pointer;padding:0;transition:all 0.3s}
-.page-dot:hover,.page-dot.active{background:#fff;transform:scale(1.5)}
-
-/* ═══════ Snap Pages ═══════ */
-.page{min-height:100vh;min-height:100svh;scroll-snap-align:start;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-
-/* ── Cover ── */
-.cover-page{background:#000}
-.cover-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.cover-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.7) 100%);pointer-events:none}
-.cover-content{position:relative;z-index:2;text-align:center}
-.cover-content img{width:min(65vw,360px);height:auto;margin:0 auto;opacity:0.85;animation:fadeUp 2s ease-out 0.3s both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.cover-tagline{margin-top:1.5rem;font-size:clamp(0.6rem,1vw,0.72rem);letter-spacing:0.15em;color:rgba(255,255,255,0.3);animation:fadeUp 2s ease-out 0.8s both}
-.scroll-hint{position:absolute;bottom:5rem;left:50%;z-index:10;transform:translateX(-50%);color:rgba(255,255,255,0.25);font-size:0.65rem;letter-spacing:0.1em;animation:pulse 2.5s ease-in-out infinite;pointer-events:none}
-@keyframes pulse{0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}}
-
-/* ═══════ Content Pages ═══════ */
-.content-page{background:#000}
-
-/* 关于页：白底 */
-#about{background:#fff}
-#about .section-header h2{color:#111}
-#about .section-header p{color:#666}
-#about .about-text h3{color:#111}
-#about .about-text .role{color:#888}
-#about .about-text .bio{color:#444}
-
-/* 联系页：纯白底 */
-#contact{background:#fff}
-#contact .section-header h2{color:#111}
-#contact .section-header p{color:#666}
-#contact .contact-list p{color:#444}
-#contact .contact-list a:hover{color:#111}
-.page-inner{max-width:1600px;width:100%;margin:0 auto;padding:6rem 2.5rem 4rem}
-
-.section-header{text-align:center;margin-bottom:4rem}
-.section-header h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:400;letter-spacing:-0.02em;color:#fff;margin-bottom:0.75rem}
-.section-header p{font-size:0.8rem;color:#888;line-height:1.7;max-width:500px;margin:0 auto}
-.section-divider{width:30px;height:1px;background:#ddd;margin:2rem auto 0}
-
-/* ── Works List: Es Devlin 风格 ── */
-/* 图片占页面宽度约65%，居中，两侧留白 */
-/* 间距≈图片高度（约等于图片自身高度的间距） */
-.works-list{display:flex;flex-direction:column;gap:0;max-width:960px;margin:0 auto}
-
-.work-item{margin-bottom:4rem}
-.work-item:last-child{margin-bottom:0}
-
-/* 图片容器：不设 overflow:hidden 在外层，标题放在外面 */
-/* 封面图跟详情页一样：最大720px，居中，不撑满宽度 */
-.work-cover{display:block;width:100%;max-width:504px;margin:0 auto;overflow:hidden;background:#111;cursor:pointer;position:relative}
-.work-cover img{width:100%;height:auto;display:block;filter:grayscale(1) brightness(0.7);transition:filter 0.6s ease,transform 0.8s ease}
-.work-cover:hover img{filter:grayscale(0) brightness(1);transform:scale(1.02)}
-.work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:#111;color:#666;font-size:1.1rem}
-
-/* 标题在图片下方居中 */
-.work-title{margin-top:1rem;font-size:0.9rem;font-weight:400;color:#eee;line-height:1.3;text-align:center}
-.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#888;text-align:center}
-
-/* ── About ── */
-.about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:960px;margin:0 auto}
-@media(min-width:768px){.about-grid{grid-template-columns:1fr 2fr;gap:0}}
-.about-photo{width:100%;aspect-ratio:3/4;background:#f5f5f5;overflow:hidden}
-.about-photo img{width:100%;height:100%;object-fit:cover}
-.about-text{padding:0}
-@media(min-width:768px){.about-text{padding:0 0 0 3rem}}
-.about-text h3{font-size:1.25rem;font-weight:400;margin-bottom:0.25rem;color:#fff}
-.about-text .role{font-size:0.75rem;color:#888;margin-bottom:1.5rem;letter-spacing:0.04em}
-.about-text .bio{font-size:0.85rem;line-height:1.9;color:#aaa}
-
-/* ── Contact ── */
-.contact-list{text-align:center;max-width:400px;margin:0 auto}
-.contact-list p{font-size:0.85rem;line-height:2;color:#aaa}
-.contact-list a{transition:color 0.2s}
-.contact-list a:hover{color:#fff}
-
-/* ── Footer ── */
-.footer-page{min-height:auto;scroll-snap-align:start;text-align:center;padding:4rem 1.25rem;font-size:0.7rem;color:#999;background:#fff;border-top:1px solid #eee}
-
-/* ── Project Detail Overlay: 单张浏览 ── */
-.project-overlay{position:fixed;inset:0;z-index:1000;background:#000;display:none;overflow:hidden}
-.project-overlay.show{display:flex;flex-direction:column}
-
-.project-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;flex-shrink:0}
-.project-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#888;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:inherit}
-.project-back:hover{color:#fff}
-.project-back .arrow{font-size:1rem}
-.project-header-title{font-size:0.9rem;color:#eee;font-weight:400}
-.project-counter{font-size:0.8rem;color:#888;min-width:60px;text-align:right}
-
-/* 单张图片展示区 */
-.project-viewer{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem 5rem}
-
-.project-image-wrap{max-width:864px;max-height:100%;display:flex;align-items:center;justify-content:center}
-.project-image-wrap img{max-width:100%;max-height:75vh;width:auto;height:auto;object-fit:contain;display:block;transition:opacity 0.3s}
-.project-image-wrap img.changing{opacity:0}
-
-/* 左右翻页按钮 */
-.project-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #333;background:rgba(0,0,0,0.8);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#888;transition:all 0.2s;z-index:10}
-.project-nav:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,0.1)}
-.project-nav.prev{left:2rem}
-.project-nav.next{right:2rem}
-.project-nav:disabled{opacity:0.3;cursor:default}
-
-/* 底部缩略图条 */
-.project-thumbs{display:flex;gap:4px;justify-content:center;padding:1rem 2.5rem;overflow-x:auto;flex-shrink:0}
-.project-thumb{width:48px;height:32px;flex-shrink:0;overflow:hidden;cursor:pointer;opacity:0.4;transition:opacity 0.2s;border:1px solid transparent}
-.project-thumb img{width:100%;height:100%;object-fit:cover}
-.project-thumb:hover{opacity:0.7}
-.project-thumb.active{opacity:1;border-color:#fff}
-
-@media(max-width:768px){
-  .project-viewer{padding:1rem 3rem}
-  .project-nav.prev{left:0.5rem}
-  .project-nav.next{right:0.5rem}
-  .project-image-wrap{max-width:100%}
-  .project-image-wrap img{max-height:60vh}
-  .project-header{padding:1rem 1.25rem}
-  .project-thumbs{padding:0.75rem 1.25rem}
+:root {
+  --bg: #0a0a0c;
+  --bg-elevated: #121217;
+  --bg-card: #18181f;
+  --fg: #e6e4e1;
+  --fg-muted: #8a8885;
+  --fg-dim: #52504e;
+  --accent: #d4a853;
+  --accent-dim: rgba(212,168,83,0.12);
+  --hairline: rgba(255,255,255,0.07);
+  --hairline-strong: rgba(255,255,255,0.12);
+  --font-display: "Times New Roman", "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif;
+  --font-sans: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: initial; }
+
+body { overflow: hidden; }
+
+/* ── Page Scroll Snap ── */
+.pages { height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.pages::-webkit-scrollbar { width: 0; }
+
+.page { min-height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+
+/* ── Top Nav ── */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; transition: background 0.4s, backdrop-filter 0.4s; }
+.nav.dark-bg { background: rgba(10,10,12,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--hairline); }
+.nav-logo { height: 28px; width: auto; }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a { color: var(--fg-muted); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.06em; transition: color 0.3s; position: relative; padding-bottom: 4px; }
+.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transition: transform 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-links a.active::after, .nav-links a:hover::after { transform: scaleX(1); }
+
+/* ── Right Page Dots ── */
+.page-dots { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); z-index: 200; display: flex; flex-direction: column; gap: 14px; }
+.page-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); border: none; cursor: pointer; transition: all 0.3s; padding: 0; }
+.page-dot:hover, .page-dot.active { background: var(--accent); transform: scale(1.4); }
+
+/* ── Hero / 封面 ── */
+.hero-page { background: #000; }
+.hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; will-change: transform, opacity; }
+.hero-slide.active { opacity: 1; animation: kenBurns 7s ease-in-out forwards; }
+.hero-slide.fading-out { opacity: 0; transform: scale(1); animation: none; transition: opacity 1.8s ease; }
+
+@keyframes kenBurns {
+  0%   { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+.hero-slide:nth-child(2).active { animation-name: kenBurns2; }
+@keyframes kenBurns2 {
+  0%   { transform: scale(1.1) translate(0, 0); }
+  100% { transform: scale(1.0) translate(1.5%, -0.5%); }
+}
+.hero-slide:nth-child(3).active { animation-name: kenBurns3; }
+@keyframes kenBurns3 {
+  0%   { transform: scale(1.05) translate(1%, 0); }
+  100% { transform: scale(1.15) translate(-1%, 0.5%); }
+}
+
+/* Hero overlay */
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.3) 100%); pointer-events: none; }
+
+.hero-content { position: relative; z-index: 10; text-align: center; padding: 0 24px; max-width: 800px; }
+.hero-logo { max-width: 360px; width: 70%; height: auto; margin: 0 auto 40px; display: block; filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5)); }
+.hero-tagline { font-size: 0.78rem; letter-spacing: 0.16em; color: rgba(255,255,255,0.65); text-transform: uppercase; }
+.hero-scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.6; animation: bounce 2s ease-in-out infinite; }
+.hero-scroll-hint span { font-size: 0.68rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); }
+.hero-scroll-hint .arrow { width: 1px; height: 28px; background: rgba(255,255,255,0.35); position: relative; }
+.hero-scroll-hint .arrow::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-right: 1px solid rgba(255,255,255,0.35); border-bottom: 1px solid rgba(255,255,255,0.35); transform: translateX(-50%) rotate(45deg); }
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* Hero slide controls */
+.hero-controls { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 12px; }
+.hero-ctrl { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); background: transparent; cursor: pointer; transition: all 0.3s; padding: 0; }
+.hero-ctrl.active { background: var(--accent); border-color: var(--accent); }
+
+/* ── Page Shared ── */
+.page-inner { max-width: 1280px; width: 100%; padding: 120px 48px; position: relative; z-index: 5; }
+.page-label { font-size: 0.7rem; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+.page-title { font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 400; line-height: 1.15; color: var(--fg); margin-bottom: 20px; letter-spacing: -0.01em; }
+.page-lead { font-size: 1rem; line-height: 1.7; color: var(--fg-muted); max-width: 640px; }
+
+/* ── About Page ── */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: center; }
+.about-visual { position: relative; }
+.about-avatar-wrap { width: 100%; aspect-ratio: 4/5; position: relative; border: 1px solid var(--hairline); overflow: hidden; }
+.about-avatar-wrap::after { content: ''; position: absolute; top: 16px; left: 16px; right: 16px; bottom: 16px; border: 1px solid var(--hairline-strong); pointer-events: none; }
+.about-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-decorator { position: absolute; bottom: -20px; right: -20px; width: 60%; aspect-ratio: 1; border: 1px solid var(--accent); opacity: 0.15; pointer-events: none; }
+.about-text h3 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 400; color: var(--fg); margin-bottom: 8px; }
+.about-text .founder-meta { font-size: 0.85rem; color: var(--fg-muted); line-height: 1.6; margin-bottom: 28px; }
+.about-text .bio { font-size: 0.92rem; line-height: 1.85; color: var(--fg-muted); }
+.about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--hairline); }
+.stat-value { font-family: var(--font-display); font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.stat-label { font-size: 0.75rem; color: var(--fg-dim); letter-spacing: 0.04em; }
+
+/* ── Works Page ── */
+.works-tabs { display: flex; gap: 10px; margin: 48px 0 32px; flex-wrap: wrap; }
+.works-tab { padding: 9px 22px; border: 1px solid var(--hairline); background: transparent; color: var(--fg-muted); font-size: 0.8rem; cursor: pointer; transition: all 0.25s; letter-spacing: 0.04em; font-family: var(--font-sans); }
+.works-tab:hover, .works-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px; }
+.work-card { background: var(--bg-card); border: 1px solid var(--hairline); transition: all 0.25s; cursor: default; overflow: hidden; }
+.work-card:hover { border-color: var(--hairline-strong); background: var(--bg-elevated); transform: translateY(-2px); }
+.work-card .work-cover { width: 100%; aspect-ratio: 4/3; background: var(--bg-elevated); border-bottom: 1px solid var(--hairline); position: relative; overflow: hidden; }
+.work-card .work-cover::after { content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid rgba(255,255,255,0.25); pointer-events: none; transition: border-color 0.3s; }
+.work-card:hover .work-cover::after { border-color: rgba(255,255,255,0.4); }
+.work-card .work-cover-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.work-card .work-info { padding: 20px 22px 24px; }
+.work-card .work-category { font-size: 0.66rem; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+.work-card .work-title { font-size: 0.98rem; color: var(--fg); margin-bottom: 4px; line-height: 1.3; font-weight: 500; text-align: left; }
+.work-card .work-period { font-size: 0.76rem; color: var(--fg-dim); text-align: left; }
+
+/* ── Contact Page ── */
+.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: start; }
+.contact-info { display: flex; flex-direction: column; gap: 36px; }
+.contact-item { border-left: 2px solid var(--accent); padding-left: 22px; }
+.contact-item .ci-label { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--fg-dim); text-transform: uppercase; margin-bottom: 6px; }
+.contact-item .ci-value { font-size: 1rem; color: var(--fg); line-height: 1.7; }
+.contact-visual { aspect-ratio: 4/3; background: var(--bg-card); border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; color: var(--fg-dim); font-size: 0.85rem; flex-direction: column; gap: 8px; }
+.contact-visual .map-pin { font-size: 2rem; margin-bottom: 4px; }
+.contact-visual .map-line { width: 60%; height: 1px; background: var(--hairline); }
+
+/* ── Footer ── */
+.footer { border-top: 1px solid var(--hairline); padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; scroll-snap-align: start; }
+.footer-copy { font-size: 0.76rem; color: var(--fg-dim); }
+.footer-links { display: flex; gap: 28px; list-style: none; }
+.footer-links a { color: var(--fg-dim); text-decoration: none; font-size: 0.76rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--fg-muted); }
+
 /* ── Animations ── */
-.fade-on-scroll{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
-.fade-on-scroll.visible{opacity:1;transform:translateY(0)}
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Back to top ── */
+.back-to-top { position: fixed; bottom: 32px; right: 32px; width: 40px; height: 40px; border: 1px solid var(--hairline); background: var(--bg-elevated); color: var(--fg-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; opacity: 0; pointer-events: none; transition: opacity 0.3s, border-color 0.2s; z-index: 199; }
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .nav { padding: 20px 24px; }
+  .nav-links { gap: 24px; }
+  .nav-links a { font-size: 0.75rem; }
+  .nav-logo { height: 22px; }
+  .page-inner { padding: 100px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-visual { max-width: 320px; margin: 0 auto; }
+  .contact-row { grid-template-columns: 1fr; gap: 48px; }
+  .works-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-logo { max-width: 260px; }
+  .page-dots { right: 14px; gap: 10px; }
+  .page-dot { width: 6px; height: 6px; }
+  .hero-controls { bottom: 28px; }
+}
+@media (max-width: 480px) {
+  .works-grid { grid-template-columns: 1fr; }
+  .works-tab { padding: 7px 14px; font-size: 0.73rem; }
+  .about-stats { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- Nav: 四个元素平铺 space-between -->
-<nav id="nav">
-  <a href="#cover"><img src="images/logo-dameng-white.png" alt="大盟"></a>
-  <a href="#works" class="nav-link" data-page="works">作品</a>
-  <a href="#about" class="nav-link" data-page="about">关于</a>
-  <a href="#contact" class="nav-link" data-page="contact">联系</a>
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <img class="nav-logo" src="images/logo.png" alt="大盟文化">
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">封面</a></li>
+    <li><a href="#about">关于</a></li>
+    <li><a href="#works">作品</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
 </nav>
 
-<div class="page-dots" id="pageDots"></div>
+<!-- Page Dots -->
+<div class="page-dots" id="pageDots">
+  <button class="page-dot active" data-page="0"></button>
+  <button class="page-dot" data-page="1"></button>
+  <button class="page-dot" data-page="2"></button>
+  <button class="page-dot" data-page="3"></button>
+</div>
 
-<!-- ═══ Page 1: Cover ═══ -->
-<section class="page cover-page" id="cover">
-  <video class="cover-video" autoplay muted loop playsinline preload="auto" id="coverVideo" poster="images/cover-poster.jpg">
-    <source src="images/cover-video.mp4" type="video/mp4">
-  </video>
-  <div class="cover-overlay"></div>
-  <div class="cover-content">
-    <img src="images/logo-dameng-white.png" alt="大盟">
-    <div class="cover-tagline">STAGE LIGHTING DESIGN</div>
-  </div>
-  <div class="scroll-hint" id="scrollHint">↓ SCROLL</div>
-</section>
+<!-- Scroll Container -->
+<div class="pages" id="pages">
 
-<!-- ═══ Page 2: Works ═══ -->
-<section class="page content-page" id="works">
-  <div class="page-inner">
-    <div class="section-header">
-      <h2>作品</h2>
-      <p>演唱会 · 大型综艺 · 直播晚会<br>用光讲述每一个舞台故事</p>
-      <div class="section-divider"></div>
+  <!-- ═══ Page 1: 封面 Hero ═══ -->
+  <section class="page hero-page" id="hero">
+    <div class="hero-slideshow" id="slideshow">
+      <div class="hero-slide active" style="background-image: url('images/cover-1.jpg')"></div>
+      <div class="hero-slide" style="background-image: url('images/cover-2.jpg')"></div>
+      <div class="hero-slide" style="background-image: url('images/cover-3.jpg')"></div>
     </div>
-    <div class="works-list" id="worksGrid"></div>
-  </div>
-</section>
-
-<!-- ═══ Page 3: About ═══ -->
-<section class="page content-page" id="about">
-  <div class="page-inner">
-    <div class="section-header">
-      <h2>关于</h2>
-      <p>湖南大盟文化发展有限公司，成立于2020年。<br>公司长期为国内各大卫视、头部视频平台等S+级大型综艺及晚会提供核心灯光设计，作品覆盖顶级演唱会、现象级综艺、重磅直播晚会等多元场景。</p>
-      <div class="section-divider"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <img class="hero-logo" src="images/logo.png" alt="大盟文化">
+      <div class="hero-tagline">Stage Lighting Design Studio</div>
     </div>
-    <div class="about-grid">
-      <div class="about-photo">
-        <img src="images/avatar.jpg" alt="陈捷予" loading="lazy">
+    <div class="hero-controls" id="heroControls">
+      <button class="hero-ctrl active" data-slide="0"></button>
+      <button class="hero-ctrl" data-slide="1"></button>
+      <button class="hero-ctrl" data-slide="2"></button>
+    </div>
+    <div class="hero-scroll-hint" id="scrollHint">
+      <span>SCROLL</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══ Page 2: 关于 About ═══ -->
+  <section class="page" id="about">
+    <div class="page-inner">
+      <div class="fade-in">
+        <div class="page-label">About</div>
+        <h2 class="page-title">关于大盟文化</h2>
+        <p class="page-lead">湖南大盟文化发展有限公司成立于2020年，由资深电视灯光设计师陈捷予创办，专注为国内顶级综艺、晚会、演唱会提供灯光设计解决方案。</p>
       </div>
-      <div class="about-text">
-        <h3>陈捷予</h3>
-        <div class="role">创始人 &amp; 灯光设计总监</div>
-        <div class="bio">
-          1986年生于河南洛阳，中央戏剧学院舞台美术系灯光设计专业毕业。曾任职湖南电视台，担任专业电视灯光设计师。<br><br>
-          2020年创办大盟文化，公司长期为国内各大卫视、头部视频平台等S+级大型综艺及晚会提供核心灯光设计，作品覆盖顶级演唱会、现象级综艺、重磅直播晚会等多元场景。如《歌手》《披荆斩棘》《乘风破浪》《声生不息》《明日之子》《火星情报局》《湖南卫视跨年演唱会》《王者荣耀共创之夜》《B站跨年最美的夜》等。
+
+      <div class="about-grid fade-in">
+        <div class="about-visual">
+          <div class="about-decorator"></div>
+          <div class="about-avatar-wrap">
+            <img class="about-avatar-img" src="images/avatar.png" alt="陈捷予" loading="lazy">
+          </div>
+        </div>
+        <div class="about-text">
+          <h3>陈捷予</h3>
+          <div class="founder-meta">创始人 &amp; 灯光设计总监<br>中央戏剧学院舞台美术系灯光设计专业</div>
+          <div class="bio">
+            1986年生于河南洛阳，毕业于中央戏剧学院舞台美术系灯光设计专业。毕业后入职湖南电视台，成为一名专业电视灯光设计师。十余年行业深耕，参与并主导了众多S+级大型综艺项目的灯光设计工作。<br><br>
+            2020年4月创办大盟文化，以极致的专业追求和对光影的深刻理解，为国内顶尖卫视和视频平台提供灯光设计服务。作品涵盖综艺节目、大型直播晚会、个人演唱会等多个领域，每一次呈现都力求给观众带来惊艳的视觉体验。
+          </div>
+        </div>
+      </div>
+
+      <div class="about-stats fade-in">
+        <div>
+          <div class="stat-value">5年+</div>
+          <div class="stat-label">公司成立</div>
+        </div>
+        <div>
+          <div class="stat-value">50+</div>
+          <div class="stat-label">大型项目</div>
+        </div>
+        <div>
+          <div class="stat-value">15年+</div>
+          <div class="stat-label">行业经验</div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ Page 4: Contact ═══ -->
-<section class="page content-page" id="contact">
-  <div class="page-inner">
-    <div class="section-header">
-      <h2>联系</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="contact-list">
-      <p>长沙 · 三一大道526号<br>旺德府凯悦国际大厦704</p>
-      <p><a href="tel:18670918666">186-7091-8666</a></p>
-      <p><a href="mailto:www.44288183@qq.com">www.44288183@qq.com</a></p>
-    </div>
-  </div>
-</section>
+  <!-- ═══ Page 3: 作品 Works ═══ -->
+  <section class="page" id="works">
+    <div class="page-inner">
+      <div class="fade-in">
+        <div class="page-label">Works</div>
+        <h2 class="page-title">代表作品</h2>
+        <p class="page-lead">覆盖综艺栏目、大型晚会、个人演唱会三大业务板块，服务国内一线卫视及主流视频平台。</p>
+      </div>
 
-<!-- ═══ Footer ═══ -->
-<footer class="footer-page">
-  <p>© 2025 湖南大盟文化发展有限公司</p>
-</footer>
+      <div class="works-tabs fade-in">
+        <button class="works-tab active" data-category="all">全部</button>
+        <button class="works-tab" data-category="show">综艺栏目</button>
+        <button class="works-tab" data-category="gala">大型晚会</button>
+        <button class="works-tab" data-category="concert">演唱会</button>
+      </div>
 
-<!-- ═══ Project Detail Overlay ═══ -->
-<div class="project-overlay" id="projectOverlay">
-  <div class="project-header">
-    <button class="project-back" onclick="closeProject()">
-      <span class="arrow">←</span> 返回作品
-    </button>
-    <div class="project-header-title" id="projectHeaderTitle"></div>
-    <div class="project-counter" id="projectCounter"></div>
-  </div>
-  <div class="project-viewer">
-    <button class="project-nav prev" id="projectPrev" onclick="changeImage(-1)">‹</button>
-    <div class="project-image-wrap">
-      <img id="projectImage" src="" alt="" onchange="">
+      <div class="works-grid fade-in" id="worksGrid"></div>
     </div>
-    <button class="project-nav next" id="projectNext" onclick="changeImage(1)">›</button>
-  </div>
-  <div class="project-thumbs" id="projectThumbs"></div>
+  </section>
+
+  <!-- ═══ Page 4: 联系 Contact ═══ -->
+  <section class="page" id="contact">
+    <div class="page-inner">
+      <div class="fade-in">
+        <div class="page-label">Contact</div>
+        <h2 class="page-title">联系我们</h2>
+        <p class="page-lead">期待与您合作，共同打造下一个惊艳舞台。</p>
+      </div>
+
+      <div class="contact-row fade-in">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="ci-label">电话</div>
+            <div class="ci-value">186-7091-8666</div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-label">邮箱</div>
+            <div class="ci-value">www.44288183@qq.com</div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-label">地址</div>
+            <div class="ci-value">湖南省长沙市长沙县三一大道526号<br>旺德府凯悦国际大厦704</div>
+          </div>
+        </div>
+        <div class="contact-visual">
+          <div class="map-pin">📍</div>
+          <span>旺德府凯悦国际大厦</span>
+          <div class="map-line"></div>
+          <span style="font-size:0.72rem;margin-top:4px;color:var(--fg-dim)">三一大道526号</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-copy">© 2025 湖南大盟文化发展有限公司</div>
+    <ul class="footer-links">
+      <li><a href="#hero">封面</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#works">作品</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </footer>
+
 </div>
 
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
+
 <script>
-/* ═══════════ Cover Video ═══════════ */
-const coverVideo = document.getElementById('coverVideo');
-if (coverVideo) coverVideo.play().catch(() => {});
+/* ═══════════ Hero Slideshow ═══════════ */
+const slides = document.querySelectorAll('.hero-slide');
+const ctrls = document.querySelectorAll('.hero-ctrl');
+let currentSlide = 0;
+let slideTimer = null;
+const SLIDE_INTERVAL = 6000; /* 6s per slide */
 
-/* ═══════════ Page Tracking ═══════════ */
-const pages = document.querySelectorAll('.page, .footer-page');
-const pageIds = ['cover','works','about','contact'];
-const navLinks = document.querySelectorAll('.nav-link');
-const scrollHint = document.getElementById('scrollHint');
-const dotsContainer = document.getElementById('pageDots');
-const navEl = document.getElementById('nav');
+function goToSlide(index) {
+  if (index === currentSlide) return;
+  const prev = slides[currentSlide];
+  const next = slides[index];
 
-pageIds.forEach((id, i) => {
-  const dot = document.createElement('button');
-  dot.className = 'page-dot' + (i === 0 ? ' active' : '');
-  dot.dataset.page = id;
-  dot.addEventListener('click', () => document.getElementById(id).scrollIntoView({behavior:'smooth'}));
-  dotsContainer.appendChild(dot);
+  /* Fade out current */
+  prev.classList.add('fading-out');
+  prev.classList.remove('active');
+
+  /* Fade in next */
+  next.classList.remove('fading-out');
+  next.classList.add('active');
+
+  /* Update controls */
+  ctrls[currentSlide].classList.remove('active');
+  ctrls[index].classList.add('active');
+
+  currentSlide = index;
+  resetTimer();
+}
+
+function resetTimer() {
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), SLIDE_INTERVAL);
+}
+
+/* Control clicks */
+ctrls.forEach(ctrl => {
+  ctrl.addEventListener('click', () => {
+    const idx = parseInt(ctrl.dataset.slide);
+    goToSlide(idx);
+  });
 });
 
-let lastPage = 0;
-const allDots = document.querySelectorAll('#pageDots .page-dot');
+/* Start auto-play */
+slideTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), SLIDE_INTERVAL);
 
-function updateActive() {
-  const st = window.scrollY;
-  let best = 0, bestDist = Infinity;
-  pages.forEach((p, i) => {
-    const idx = i < pages.length - 1 ? i : pageIds.length - 1;
-    const dist = Math.abs(st - p.offsetTop);
-    if (dist < bestDist) { bestDist = dist; best = idx; }
-  });
-  if (best !== lastPage) {
-    lastPage = best;
-    navLinks.forEach(a => a.classList.toggle('active', a.dataset.page === pageIds[best]));
-    allDots.forEach((d,i) => d.classList.toggle('active', i === best));
-    if (scrollHint) {
-      scrollHint.style.opacity = best === 0 ? '1' : '0';
-      scrollHint.style.pointerEvents = best === 0 ? 'auto' : 'none';
+/* ═══════════ Page Scroll Tracking ═══════════ */
+const pagesEl = document.getElementById('pages');
+const nav = document.getElementById('nav');
+const backToTop = document.getElementById('backToTop');
+const scrollHint = document.getElementById('scrollHint');
+const navLinks = document.querySelectorAll('.nav-links a');
+const pageDots = document.querySelectorAll('.page-dot');
+const sections = document.querySelectorAll('.page, .footer');
+const sectionIds = ['hero', 'about', 'works', 'contact'];
+
+function getCurrentPage() {
+  const scrollTop = pagesEl.scrollTop;
+  const viewHeight = window.innerHeight;
+  /* Find which section is most visible */
+  let bestIdx = 0;
+  let bestVisibility = 0;
+  sections.forEach((section, i) => {
+    const rect = section.getBoundingClientRect();
+    const visible = Math.min(rect.bottom, viewHeight) - Math.max(rect.top, 0);
+    if (visible > bestVisibility) {
+      bestVisibility = visible;
+      bestIdx = i < sections.length - 1 ? i : sectionIds.length - 1;
     }
-    if (best === 0) navEl.classList.remove('scrolled');
-    else navEl.classList.add('scrolled');
-    
-    // 关于/联系页用浅色导航栏
-    if (best >= 3) navEl.classList.add('light');
-    else navEl.classList.remove('light');
-  }
+  });
+  return Math.min(bestIdx, sectionIds.length - 1);
 }
-window.addEventListener('scroll', updateActive, {passive:true});
-updateActive();
 
+function updateActivePage() {
+  const idx = getCurrentPage();
+  /* Nav links */
+  navLinks.forEach((link, i) => link.classList.toggle('active', i === idx));
+  /* Page dots */
+  pageDots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+  /* Nav background (dark on non-hero) */
+  nav.classList.toggle('dark-bg', idx > 0 || pagesEl.scrollTop > 60);
+  /* Back to top */
+  backToTop.classList.toggle('visible', pagesEl.scrollTop > 600);
+  /* Hide scroll hint after hero */
+  if (scrollHint) scrollHint.style.opacity = idx > 0 ? '0' : '0.6';
+}
+
+/* Nav link clicks */
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
-    const target = document.getElementById(link.dataset.page);
-    if (target) target.scrollIntoView({behavior:'smooth'});
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
   });
 });
 
-/* ═══════════ Fade on scroll ═══════════ */
-const fadeObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold:0.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(el));
+/* Page dot clicks */
+pageDots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const idx = parseInt(dot.dataset.page);
+    const target = document.getElementById(sectionIds[idx]);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+/* Back to top */
+backToTop.addEventListener('click', () => {
+  document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+});
+
+/* Scroll listener */
+pagesEl.addEventListener('scroll', updateActivePage, { passive: true });
+
+/* ═══════════ Fade-in Observer ═══════════ */
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+/* Observe fade-in elements */
+const observeFade = () => {
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+};
+observeFade();
 
 /* ═══════════ Works Data ═══════════ */
-const projects = [
-  {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘",count:6},
-  {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪",count:5},
-  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/华流季/大湾区季",folder:"声生不息",count:5},
-  {title:"歌手",subtitle:"2024巅峰之夜 / 2025 / 2026",folder:"歌手2025",count:7},
-  {title:"王者荣耀共创之夜",subtitle:"2020-2025",folder:"王者荣耀共创之夜",count:27},
-  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年",count:9},
-  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
-  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
-  {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"李宇春周末愉快巡演",count:11},
-  {title:"腾讯视频星光大赏",subtitle:"2023-2025",folder:"星光大赏",count:2},
+const works = [
+  { title: '披荆斩棘', period: '第1~5季', category: 'show' },
+  { title: '乘风破浪', period: '第2/5/6季', category: 'show' },
+  { title: '声生不息', period: '港乐/宝岛/家年华/大湾区季', category: 'show' },
+  { title: '歌手', period: '2024巅峰之夜 / 2025', category: 'show' },
+  { title: '青年π计划', period: '第1季', category: 'show' },
+  { title: '明日之子', period: '第3/4/5季', category: 'show' },
+  { title: '火星情报局', period: '第2/3/4/5/7季', category: 'show' },
+  { title: '爱乐之都', period: '第1季', category: 'show' },
+  { title: '我是特优生', period: '第1季', category: 'show' },
+  { title: '炙热的我们', period: '', category: 'show' },
+  { title: '湖南卫视跨年晚会', period: '2021-2022', category: 'gala' },
+  { title: 'B站跨年晚会', period: '2021-2024', category: 'gala' },
+  { title: '王者荣耀周年音乐盛典', period: '2020-2025', category: 'gala' },
+  { title: '和平精英总决赛中场秀', period: '2022 / 2023', category: 'gala' },
+  { title: '抖音直播嘉年华', period: '2022', category: 'gala' },
+  { title: '央视网络春晚', period: '2019-2021', category: 'gala' },
+  { title: '腾讯家族年年年夜饭', period: '2021-2022', category: 'gala' },
+  { title: '腾讯视频星光大赏', period: '2023 / 2024', category: 'gala' },
+  { title: '阅文IP盛典', period: '2023 / 2024', category: 'gala' },
+  { title: '四川卫视跨年晚会', period: '2024', category: 'gala' },
+  { title: '川渝春晚', period: '2024', category: 'gala' },
+  { title: '抖音小年夜', period: '2024-2025', category: 'gala' },
+  { title: '青春芒果夜', period: '2024-2025', category: 'gala' },
+  { title: '小芒种花夜', period: '2021', category: 'gala' },
+  { title: '明星大侦探新春演唱会', period: '2020-2023', category: 'gala' },
+  { title: '无限X青春派对巡回演唱会', period: '2024-2025', category: 'gala' },
+  { title: 'RISE全国巡演', period: '', category: 'concert' },
+  { title: '李宇春·周末愉快', period: '2024巡回演唱会', category: 'concert' },
+  { title: '檀健次·多见一次', period: '2024巡回演唱会', category: 'concert' },
+  { title: '毛不易·生日演唱会', period: '2024', category: 'concert' },
+  { title: '刘德华·把我唱给你听', period: '抖音线上演唱会', category: 'concert' },
+  { title: '易烊千玺·礐壆', period: '2025演唱会', category: 'concert' },
 ];
 
-/* ═══════════ Render Works ═══════════ */
-/* 结构: .work-item > .work-cover(img) + .work-title + .work-meta */
-/* 标题在图片容器外面，不会被 overflow:hidden 裁掉 */
-const grid = document.getElementById('worksGrid');
-projects.forEach((p, idx) => {
-  const item = document.createElement('div');
-  item.className = 'work-item';
-  
-  // 图片容器
-  const cover = document.createElement('div');
-  cover.className = 'work-cover';
-  
-  if(p.folder && p.count > 0){
-    const coverSrc = encodeURI(`images/works/${p.folder}/1.jpg`);
-    cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy">`;
-    cover.addEventListener('click', () => openProject(idx));
-  } else {
-    cover.innerHTML = `<div class="work-cover-noimg">${p.title}</div>`;
-  }
-  
-  // 标题在图片外面
-  const title = document.createElement('div');
-  title.className = 'work-title';
-  title.textContent = p.title;
-  
-  const meta = document.createElement('div');
-  meta.className = 'work-meta';
-  meta.textContent = p.subtitle || '';
-  
-  item.appendChild(cover);
-  item.appendChild(title);
-  item.appendChild(meta);
-  grid.appendChild(item);
-});
+const catLabels = { show: '综艺栏目', gala: '大型晚会', concert: '演唱会' };
 
-/* ═══════════ Project Detail: 单张浏览 ═══════════ */
-const overlay = document.getElementById('projectOverlay');
-const projectImage = document.getElementById('projectImage');
-const projectHeaderTitle = document.getElementById('projectHeaderTitle');
-const projectCounter = document.getElementById('projectCounter');
-const projectThumbs = document.getElementById('projectThumbs');
-const projectPrev = document.getElementById('projectPrev');
-const projectNext = document.getElementById('projectNext');
-
-let currentProject = null;
-let currentImageIdx = 0;
-
-function openProject(idx) {
-  const p = projects[idx];
-  if (!p.folder || p.count === 0) return;
-  
-  currentProject = p;
-  currentImageIdx = 1;
-  
-  projectHeaderTitle.textContent = p.title;
-  
-  // 生成缩略图条
-  let thumbsHTML = '';
-  for (let i = 1; i <= p.count; i++) {
-    const src = encodeURI(`images/works/${p.folder}/${i}.jpg`);
-    thumbsHTML += `<div class="project-thumb${i===1?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${src}" alt="" loading="lazy"></div>`;
-  }
-  projectThumbs.innerHTML = thumbsHTML;
-  
-  showImage(1);
-  
-  overlay.classList.add('show');
-  document.body.style.overflow = 'hidden';
+function renderWorks(filter = 'all') {
+  const grid = document.getElementById('worksGrid');
+  if (!grid) return;
+  const filtered = filter === 'all' ? works : works.filter(w => w.category === filter);
+  grid.innerHTML = filtered.map(w => `
+    <div class="work-card">
+      <div class="work-cover">
+        ${w.image ? `<img class="work-cover-img" src="images/works/${w.image}" alt="${w.title}" loading="lazy">` : ''}
+      </div>
+      <div class="work-info">
+        <div class="work-category">${catLabels[w.category]}</div>
+        <div class="work-title">${w.title}</div>
+        <div class="work-period">${w.period || '—'}</div>
+      </div>
+    </div>
+  `).join('');
 }
 
-function showImage(idx) {
-  if (!currentProject) return;
-  currentImageIdx = idx;
-  const src = encodeURI(`images/works/${currentProject.folder}/${idx}.jpg`);
-  
-  // 淡出再淡入
-  projectImage.classList.add('changing');
-  setTimeout(() => {
-    projectImage.src = src;
-    projectImage.alt = currentProject.title + ' ' + idx;
-    projectImage.classList.remove('changing');
-  }, 150);
-  
-  // 计数器
-  projectCounter.textContent = idx + ' / ' + currentProject.count;
-  
-  // 按钮状态
-  projectPrev.disabled = (idx <= 1);
-  projectNext.disabled = (idx >= currentProject.count);
-  
-  // 缩略图高亮
-  projectThumbs.querySelectorAll('.project-thumb').forEach(t => {
-    t.classList.toggle('active', parseInt(t.dataset.idx) === idx);
+renderWorks();
+
+document.querySelectorAll('.works-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.works-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderWorks(tab.dataset.category);
+    /* Re-observe fade animations for new cards */
+    observeFade();
   });
-  
-  // 滚动缩略图到可见位置
-  const activeThumb = projectThumbs.querySelector('.project-thumb.active');
-  if (activeThumb) activeThumb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
-}
-
-function changeImage(dir) {
-  if (!currentProject) return;
-  const newIdx = currentImageIdx + dir;
-  if (newIdx >= 1 && newIdx <= currentProject.count) {
-    showImage(newIdx);
-  }
-}
-
-function goToImage(idx) {
-  showImage(idx);
-}
-
-function closeProject() {
-  overlay.classList.remove('show');
-  document.body.style.overflow = '';
-  currentProject = null;
-}
-
-// 键盘左右翻页 + ESC关闭
-document.addEventListener('keydown', e => {
-  if (!overlay.classList.contains('show')) return;
-  if (e.key === 'ArrowLeft') changeImage(-1);
-  else if (e.key === 'ArrowRight') changeImage(1);
-  else if (e.key === 'Escape') closeProject();
 });
 
-// 点击背景关闭
-overlay.addEventListener('click', e => {
-  if (e.target === overlay) closeProject();
-});
+/* ═══════════ Initial State ═══════════ */
+updateActivePage();
 </script>
 
 </body>
