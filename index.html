@@ -60,7 +60,7 @@ nav img{height:1.4rem;width:auto}
 /* 间距≈图片高度（约等于图片自身高度的间距） */
 .works-list{display:flex;flex-direction:column;gap:0;max-width:960px;margin:0 auto}
 
-.work-item{margin-bottom:9.6rem}
+.work-item{margin-bottom:4rem}
 .work-item:last-child{margin-bottom:0}
 
 /* 图片容器：不设 overflow:hidden 在外层，标题放在外面 */
@@ -70,9 +70,9 @@ nav img{height:1.4rem;width:auto}
 .work-cover:hover img{filter:grayscale(0) brightness(1);transform:scale(1.02)}
 .work-cover-noimg{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:#f5f5f5;color:#ccc;font-size:1.1rem}
 
-/* 标题在图片下方，独立元素，不会被 overflow:hidden 裁掉 */
-.work-title{margin-top:1.5rem;font-size:0.9rem;font-weight:400;color:#333;line-height:1.3}
-.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#aaa}
+/* 标题在图片下方居中 */
+.work-title{margin-top:1rem;font-size:0.9rem;font-weight:400;color:#333;line-height:1.3;text-align:center}
+.work-meta{margin-top:0.25rem;font-size:0.75rem;color:#aaa;text-align:center}
 
 /* ── About ── */
 .about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:960px;margin:0 auto}
