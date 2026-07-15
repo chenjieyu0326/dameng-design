@@ -15,7 +15,7 @@
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 
-html{font-size:16px;-webkit-font-smoothing:antialiased;overflow-y:auto}
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:auto}
 html::-webkit-scrollbar{width:0}
 body{font-family:'TaipeiSansTC','Noto Sans TC',"PingFang SC","Microsoft YaHei",sans-serif;background:#000;color:#fff}
 
@@ -102,7 +102,8 @@ nav img{height:1.4rem;width:auto}
 @media(min-width:768px){.mvv-grid{grid-template-columns:1fr 1fr 1fr;gap:4rem}}
 .mvv-item{text-align:center}
 .mvv-label{font-size:0.7rem;font-weight:400;color:#999;letter-spacing:0.2em;margin-bottom:0.75rem}
-.mvv-text{font-size:1rem;color:#333;line-height:1.8}
+.mvv-title{font-size:1.1rem;color:#333;margin-bottom:1rem;font-weight:400}
+.mvv-text{font-size:0.78rem;color:#666;line-height:1.8}
 
 /* ── About ── */
 .about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;max-width:960px;margin:0 auto}
@@ -203,14 +204,17 @@ nav img{height:1.4rem;width:auto}
     <div class="mvv-grid">
       <div class="mvv-item">
         <h3 class="mvv-label">MISSION</h3>
+        <p class="mvv-title">使命</p>
         <p class="mvv-text">让故事被看见</p>
       </div>
       <div class="mvv-item">
         <h3 class="mvv-label">VISION</h3>
+        <p class="mvv-title">愿景</p>
         <p class="mvv-text">与最会讲故事的人，作最难忘的舞台</p>
       </div>
       <div class="mvv-item">
         <h3 class="mvv-label">VALUES</h3>
+        <p class="mvv-title">价值观</p>
         <p class="mvv-text">表达 · 准确 · 自信 · 克制 · 敬畏</p>
       </div>
     </div>
@@ -427,21 +431,16 @@ document.querySelectorAll('.fade-on-scroll').forEach(el => fadeObserver.observe(
 
 /* ═══════════ Works Data ═══════════ */
 const projects = [
-  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年",count:9},
-  {title:"王者荣耀共创之夜",subtitle:"2022",folder:"王者荣耀共创之夜2022",count:21},
-  {title:"王者荣耀共创之夜",subtitle:"2025",folder:"王者荣耀共创之夜2025",count:6},
-  {title:"王者荣耀共创之夜",subtitle:"2023",folder:"王者共创之夜2023",count:5},
-  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
-  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
-  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息",count:5},
   {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘",count:6},
   {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪",count:5},
+  {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/华流季/大湾区季",folder:"声生不息",count:5},
   {title:"歌手",subtitle:"2024巅峰之夜 / 2025 / 2026",folder:"歌手2025",count:7},
+  {title:"王者荣耀共创之夜",subtitle:"2020-2025",folder:"王者荣耀共创之夜",count:27},
+  {title:"江苏卫视跨年晚会",subtitle:"2025-2026",folder:"江苏卫视跨年",count:9},
+  {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
+  {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
   {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"李宇春周末愉快巡演",count:11},
   {title:"腾讯视频星光大赏",subtitle:"2023-2025",folder:"星光大赏",count:2},
-  {title:"《逆战：未来》开服音乐'杰'LIVE",subtitle:"2026",folder:"逆战未来开服音乐杰LIVE",count:15},
-  {title:"星瞳五周年庆典",subtitle:"2026线下演唱会",folder:"星瞳五周年庆典",count:9},
-  {title:"光与夜之恋五周年",subtitle:"2026",folder:"光与夜之恋五周年",count:13},
 ];
 
 /* ═══════════ Render Works ═══════════ */
