@@ -49,7 +49,7 @@ nav img{height:1.4rem;width:auto}
 @keyframes pulse{0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)}50%{opacity:0.7;transform:translateX(-50%) translateY(5px)}}
 
 /* ═══════ Content Pages ═══════ */
-.content-page{background:#fff}
+.content-page{background:#fff;content-visibility:auto;contain-intrinsic-size:100vh}
 
 /* 关于页 */
 #about .section-header h2{color:#111}
@@ -185,8 +185,8 @@ nav img{height:1.4rem;width:auto}
 
 <!-- ═══ Page 1: Cover ═══ -->
 <section class="page cover-page" id="cover">
-  <video class="cover-video" autoplay muted loop playsinline preload="auto" id="coverVideo" poster="images/cover-poster.jpg">
-    <source src="images/cover-video.mp4" type="video/mp4">
+  <video class="cover-video" autoplay muted loop playsinline preload="none" id="coverVideo" poster="images/cover-poster.jpg">
+    <source data-src="images/cover-video.mp4" type="video/mp4">
   </video>
   <div class="cover-overlay"></div>
   <div class="cover-content">
@@ -364,9 +364,20 @@ nav img{height:1.4rem;width:auto}
 </div>
 
 <script>
-/* ═══════════ Cover Video ═══════════ */
+/* ═══════════ Cover Video: Lazy Load ═══════════ */
+/* 封面可见时才加载视频，减少首屏带宽负担 */
 const coverVideo = document.getElementById('coverVideo');
-if (coverVideo) coverVideo.play().catch(() => {});
+const videoSource = coverVideo?.querySelector('source');
+let videoLoaded = false;
+function loadCoverVideo() {
+  if (videoLoaded || !videoSource) return;
+  videoLoaded = true;
+  videoSource.src = videoSource.dataset.src;
+  coverVideo.load();
+  coverVideo.play().catch(() => {});
+}
+// 页面加载1秒后开始加载视频（避免阻塞首屏渲染）
+setTimeout(loadCoverVideo, 1000);
 
 /* ═══════════ Page Tracking ═══════════ */
 const pages = document.querySelectorAll('.page, .footer-page');
@@ -413,12 +424,9 @@ updateActive();
 /* 手机端视频自动播放兜底 */
 const cv = document.getElementById('coverVideo');
 if (cv) {
-  const playVid = () => { cv.play().catch(()=>{}); };
-  // 页面加载后尝试播放
-  setTimeout(playVid, 500);
-  // 用户首次触摸屏幕时也尝试
-  document.addEventListener('touchstart', playVid, {once:true});
-  document.addEventListener('click', playVid, {once:true});
+  // 用户首次触摸屏幕时触发加载
+  document.addEventListener('touchstart', loadCoverVideo, {once:true});
+  document.addEventListener('click', loadCoverVideo, {once:true});
 }
 
 navLinks.forEach(link => {
@@ -468,7 +476,7 @@ projects.forEach((p, idx) => {
   
   if(p.folder && p.count > 0){
     const coverSrc = encodeURI(`images/works/${p.folder}/1.jpg`);
-    cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy">`;
+    cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy" decoding="async" fetchpriority="low">`;
     cover.addEventListener('click', () => openProject(idx));
   } else {
     cover.innerHTML = `<div class="work-cover-noimg">${p.title}</div>`;
