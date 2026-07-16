@@ -473,6 +473,7 @@ const projects = [
 ];
 
 /* ═══════════ Render Works ═══════════ */
+const IMG_BASE = 'https://dameng-site.oss-cn-hangzhou.aliyuncs.com/images/works';
 /* 结构: .work-item > .work-cover(img) + .work-title + .work-meta */
 /* 标题在图片容器外面，不会被 overflow:hidden 裁掉 */
 const grid = document.getElementById('worksGrid');
@@ -485,7 +486,7 @@ projects.forEach((p, idx) => {
   cover.className = 'work-cover';
   
   if(p.folder && p.count > 0){
-    const coverSrc = encodeURI(`images/works/${p.folder}/1.jpg`);
+    const coverSrc = encodeURI(`${IMG_BASE}/${p.folder}/1.jpg`);
     cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy" decoding="async" fetchpriority="low">`;
     cover.addEventListener('click', () => openProject(idx));
   } else {
@@ -531,7 +532,7 @@ function openProject(idx) {
   // 生成缩略图条
   let thumbsHTML = '';
   for (let i = 1; i <= p.count; i++) {
-    const src = encodeURI(`images/works/${p.folder}/${i}.jpg`);
+    const src = encodeURI(`${IMG_BASE}/${p.folder}/${i}.jpg`);
     thumbsHTML += `<div class="project-thumb${i===1?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${src}" alt="" loading="lazy"></div>`;
   }
   projectThumbs.innerHTML = thumbsHTML;
@@ -545,7 +546,7 @@ function openProject(idx) {
 function showImage(idx) {
   if (!currentProject) return;
   currentImageIdx = idx;
-  const src = encodeURI(`images/works/${currentProject.folder}/${idx}.jpg`);
+  const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
   
   // 淡出再淡入
   projectImage.classList.add('changing');
