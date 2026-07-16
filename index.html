@@ -186,7 +186,7 @@ nav img{height:1.4rem;width:auto}
 <!-- ═══ Page 1: Cover ═══ -->
 <section class="page cover-page" id="cover">
   <video class="cover-video" autoplay muted loop playsinline preload="none" id="coverVideo" poster="images/cover-poster.jpg">
-    <source data-src="images/cover-video.mp4" type="video/mp4">
+    <source data-src="https://dameng-site.oss-cn-hangzhou.aliyuncs.com/cover-video.mp4" type="video/mp4">
   </video>
   <div class="cover-overlay"></div>
   <div class="cover-content">
@@ -365,9 +365,10 @@ nav img{height:1.4rem;width:auto}
 
 <script>
 /* ═══════════ Cover Video: Lazy Load ═══════════ */
-/* 封面可见时才加载视频，减少首屏带宽负担 */
+/* 封面进入视口时才加载视频，首屏不下载51MB */
 const coverVideo = document.getElementById('coverVideo');
 const videoSource = coverVideo?.querySelector('source');
+const coverSection = document.getElementById('cover');
 let videoLoaded = false;
 function loadCoverVideo() {
   if (videoLoaded || !videoSource) return;
@@ -376,8 +377,17 @@ function loadCoverVideo() {
   coverVideo.load();
   coverVideo.play().catch(() => {});
 }
-// 页面加载1秒后开始加载视频（避免阻塞首屏渲染）
-setTimeout(loadCoverVideo, 1000);
+// IntersectionObserver：封面可见时才加载
+if (coverSection && videoSource) {
+  new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) {
+      loadCoverVideo();
+      obs.disconnect();
+    }
+  }, {rootMargin: '200px'}).observe(coverSection);
+} else {
+  setTimeout(loadCoverVideo, 1000);
+}
 
 /* ═══════════ Page Tracking ═══════════ */
 const pages = document.querySelectorAll('.page, .footer-page');
