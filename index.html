@@ -410,6 +410,17 @@ function updateActive() {
 window.addEventListener('scroll', updateActive, {passive:true});
 updateActive();
 
+/* 手机端视频自动播放兜底 */
+const cv = document.getElementById('coverVideo');
+if (cv) {
+  const playVid = () => { cv.play().catch(()=>{}); };
+  // 页面加载后尝试播放
+  setTimeout(playVid, 500);
+  // 用户首次触摸屏幕时也尝试
+  document.addEventListener('touchstart', playVid, {once:true});
+  document.addEventListener('click', playVid, {once:true});
+}
+
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
