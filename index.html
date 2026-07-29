@@ -138,7 +138,7 @@ nav img{height:1.4rem;width:auto}
 .project-viewer{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem 5rem}
 
 .project-image-wrap{max-width:864px;max-height:100%;display:flex;align-items:center;justify-content:center}
-.project-image-wrap img{max-width:100%;max-height:75vh;width:auto;height:auto;object-fit:contain;display:block;transition:opacity 0.3s}
+.project-image-wrap img,.project-image-wrap video{max-width:100%;max-height:75vh;width:auto;height:auto;object-fit:contain;display:block;transition:opacity 0.3s}.project-image-wrap video{display:none}
 .project-image-wrap img.changing{opacity:0}
 
 /* 左右翻页按钮 */
@@ -153,7 +153,7 @@ nav img{height:1.4rem;width:auto}
 .project-thumb{width:48px;height:32px;flex-shrink:0;overflow:hidden;cursor:pointer;opacity:0.4;transition:opacity 0.2s;border:1px solid #ddd}
 .project-thumb img{width:100%;height:100%;object-fit:cover}
 .project-thumb:hover{opacity:0.7}
-.project-thumb.active{opacity:1;border-color:#111}
+.project-thumb.active{opacity:1;border-color:#111}.video-thumb{display:flex;align-items:center;justify-content:center;font-size:1rem;color:#333;background:#f5f5f5}
 
 @media(max-width:768px){
   .project-viewer{padding:1rem 3rem}
@@ -357,6 +357,7 @@ nav img{height:1.4rem;width:auto}
     <button class="project-nav prev" id="projectPrev" onclick="changeImage(-1)">‹</button>
     <div class="project-image-wrap">
       <img id="projectImage" src="" alt="" onchange="">
+      <video id="projectVideo" controls playsinline preload="metadata"></video>
     </div>
     <button class="project-nav next" id="projectNext" onclick="changeImage(1)">›</button>
   </div>
@@ -459,12 +460,13 @@ const projects = [
   {title:"王者荣耀共创之夜",subtitle:"2022",folder:"王者荣耀共创之夜2022",count:21},
   {title:"王者荣耀共创之夜",subtitle:"2025",folder:"王者荣耀共创之夜2025",count:6},
   {title:"王者荣耀共创之夜",subtitle:"2023",folder:"王者共创之夜2023",count:5},
+  {title:"歌手",subtitle:"2024巅峰之夜 / 2025 / 2026",folder:"歌手2025",count:7},
+  {title:"张韶涵·玩家",subtitle:"2026巡回演唱会",folder:"张韶涵玩家2026巡回演唱会",count:31,video:true},
   {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
   {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
   {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息",count:5},
   {title:"披荆斩棘",subtitle:"第1~5季",folder:"披荆斩棘",count:6},
   {title:"乘风破浪",subtitle:"第2/5/6季",folder:"乘风破浪",count:23},
-  {title:"歌手",subtitle:"2024巅峰之夜 / 2025 / 2026",folder:"歌手2025",count:7},
   {title:"李宇春·周末愉快",subtitle:"2024巡回演唱会",folder:"李宇春周末愉快巡演",count:11},
   {title:"腾讯视频星光大赏",subtitle:"2023-2025",folder:"星光大赏",count:2},
   {title:"《逆战：未来》开服音乐'杰'LIVE",subtitle:"2026",folder:"逆战未来开服音乐杰LIVE",count:15},
@@ -511,6 +513,7 @@ projects.forEach((p, idx) => {
 /* ═══════════ Project Detail: 单张浏览 ═══════════ */
 const overlay = document.getElementById('projectOverlay');
 const projectImage = document.getElementById('projectImage');
+const projectVideo = document.getElementById('projectVideo');
 const projectHeaderTitle = document.getElementById('projectHeaderTitle');
 const projectCounter = document.getElementById('projectCounter');
 const projectThumbs = document.getElementById('projectThumbs');
@@ -525,19 +528,22 @@ function openProject(idx) {
   if (!p.folder || p.count === 0) return;
   
   currentProject = p;
-  currentImageIdx = 1;
+  currentImageIdx = p.video ? 0 : 1;
   
   projectHeaderTitle.textContent = p.title;
   
-  // 生成缩略图条
+  // 生成缩略图条，视频排在第一项
   let thumbsHTML = '';
+  if (p.video) thumbsHTML += `<div class="project-thumb video-thumb active" data-idx="0" onclick="goToImage(0)"><span>▶</span></div>`;
   for (let i = 1; i <= p.count; i++) {
     const src = encodeURI(`${IMG_BASE}/${p.folder}/${i}.jpg`);
-    thumbsHTML += `<div class="project-thumb${i===1?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${src}" alt="" loading="lazy"></div>`;
+    // 缩略图目录未上传 OSS 时，先回退使用原图，避免缩略图 404
+    const thumbSrc = src;
+    thumbsHTML += `<div class="project-thumb${(!p.video && i===1)?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${thumbSrc}" alt="" loading="lazy"></div>`;
   }
   projectThumbs.innerHTML = thumbsHTML;
   
-  showImage(1);
+  showImage(currentImageIdx);
   
   overlay.classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -546,21 +552,29 @@ function openProject(idx) {
 function showImage(idx) {
   if (!currentProject) return;
   currentImageIdx = idx;
-  const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
-  
-  // 淡出再淡入
+  const isVideo = currentProject.video && idx === 0;
   projectImage.classList.add('changing');
-  setTimeout(() => {
-    projectImage.src = src;
-    projectImage.alt = currentProject.title + ' ' + idx;
-    projectImage.classList.remove('changing');
-  }, 150);
+  projectVideo.style.display = isVideo ? 'block' : 'none';
+  projectImage.style.display = isVideo ? 'none' : 'block';
+  if (isVideo) {
+    projectVideo.src = encodeURI(`${IMG_BASE}/${currentProject.folder}/0.mp4`);
+    projectVideo.preload = 'metadata';
+    projectVideo.load();
+  } else {
+    projectVideo.pause();
+    const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
+    setTimeout(() => {
+      projectImage.src = src;
+      projectImage.alt = currentProject.title + ' ' + idx;
+      projectImage.classList.remove('changing');
+    }, 150);
+  }
   
   // 计数器
-  projectCounter.textContent = idx + ' / ' + currentProject.count;
+  projectCounter.textContent = isVideo ? '视频' : idx + ' / ' + currentProject.count;
   
   // 按钮状态
-  projectPrev.disabled = (idx <= 1);
+  projectPrev.disabled = (idx <= 0);
   projectNext.disabled = (idx >= currentProject.count);
   
   // 缩略图高亮
@@ -586,6 +600,10 @@ function goToImage(idx) {
 }
 
 function closeProject() {
+  projectVideo.pause();
+  projectVideo.removeAttribute('src');
+  projectImage.style.display = 'block';
+  projectVideo.style.display = 'none';
   overlay.classList.remove('show');
   document.body.style.overflow = '';
   currentProject = null;
