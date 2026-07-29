@@ -476,6 +476,10 @@ const projects = [
 
 /* ═══════════ Render Works ═══════════ */
 const IMG_BASE = 'https://dameng-site.oss-cn-hangzhou.aliyuncs.com/images/works';
+// 通过 OSS 图片处理按需输出小尺寸 WebP，避免首页/缩略图加载数 MB 原图
+function ossImage(path, width, quality=76) {
+  return `${IMG_BASE}/${path}?x-oss-process=image/resize,w_${width}/quality,q_${quality}/format,webp`;
+}
 /* 结构: .work-item > .work-cover(img) + .work-title + .work-meta */
 /* 标题在图片容器外面，不会被 overflow:hidden 裁掉 */
 const grid = document.getElementById('worksGrid');
@@ -488,7 +492,7 @@ projects.forEach((p, idx) => {
   cover.className = 'work-cover';
   
   if(p.folder && p.count > 0){
-    const coverSrc = encodeURI(`${IMG_BASE}/${p.folder}/1.jpg`);
+    const coverSrc = ossImage(`${encodeURI(p.folder)}/1.jpg`, 504, 74);
     cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy" decoding="async" fetchpriority="low">`;
     cover.addEventListener('click', () => openProject(idx));
   } else {
@@ -537,8 +541,7 @@ function openProject(idx) {
   if (p.video) thumbsHTML += `<div class="project-thumb video-thumb active" data-idx="0" onclick="goToImage(0)"><span>▶</span></div>`;
   for (let i = 1; i <= p.count; i++) {
     const src = encodeURI(`${IMG_BASE}/${p.folder}/${i}.jpg`);
-    // 缩略图目录未上传 OSS 时，先回退使用原图，避免缩略图 404
-    const thumbSrc = src;
+    const thumbSrc = ossImage(`${encodeURI(p.folder)}/${i}.jpg`, 120, 68);
     thumbsHTML += `<div class="project-thumb${(!p.video && i===1)?' active':''}" data-idx="${i}" onclick="goToImage(${i})"><img src="${thumbSrc}" alt="" loading="lazy"></div>`;
   }
   projectThumbs.innerHTML = thumbsHTML;
@@ -564,7 +567,7 @@ function showImage(idx) {
     projectVideo.pause();
     const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
     setTimeout(() => {
-      projectImage.src = src;
+      projectImage.src = src + '?x-oss-process=image/resize,w_1600/quality,q_82/format,webp';
       projectImage.alt = currentProject.title + ' ' + idx;
       projectImage.classList.remove('changing');
     }, 150);
