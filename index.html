@@ -357,7 +357,7 @@ nav img{height:1.4rem;width:auto}
     <button class="project-nav prev" id="projectPrev" onclick="changeImage(-1)">‹</button>
     <div class="project-image-wrap">
       <img id="projectImage" src="" alt="" onchange="">
-      <video id="projectVideo" controls playsinline preload="metadata"></video>
+      <video id="projectVideo" controls playsinline preload="metadata" muted></video>
     </div>
     <button class="project-nav next" id="projectNext" onclick="changeImage(1)">›</button>
   </div>
@@ -461,7 +461,7 @@ const projects = [
   {title:"王者荣耀共创之夜",subtitle:"2025",folder:"王者荣耀共创之夜2025",count:6},
   {title:"王者荣耀共创之夜",subtitle:"2023",folder:"王者共创之夜2023",count:5},
   {title:"歌手",subtitle:"2024巅峰之夜 / 2025 / 2026",folder:"歌手2025",count:7},
-  {title:"张韶涵·玩家",subtitle:"2026巡回演唱会",folder:"张韶涵玩家2026巡回演唱会",count:31,video:true},
+  {title:"张韶涵·玩家",subtitle:"2026巡回演唱会",folder:"张韶涵玩家2026巡回演唱会",count:31,video:true,coverIdx:15},
   {title:"易烊千玺·礐壆",subtitle:"2025演唱会",folder:"易烊千玺演唱会",count:9},
   {title:"檀健次·多见一次",subtitle:"2024巡回演唱会",folder:"檀健次演唱会",count:16},
   {title:"声生不息",subtitle:"港乐季/宝岛季/家年华/大湾区季",folder:"声生不息",count:5},
@@ -493,7 +493,8 @@ projects.forEach((p, idx) => {
   cover.className = 'work-cover';
 
   if(p.folder && p.count > 0){
-    const coverSrc = ossImage(`${encodeURI(p.folder)}/1.jpg`, 504, 74);
+    const coverIdx = p.coverIdx || 1;
+    const coverSrc = ossImage(`${encodeURI(p.folder)}/${coverIdx}.jpg`, 504, 74);
     cover.innerHTML = `<img src="${coverSrc}" alt="${p.title}" loading="lazy" decoding="async" fetchpriority="low">`;
     cover.addEventListener('click', () => openProject(idx));
   } else {
@@ -564,6 +565,7 @@ function showImage(idx) {
     projectVideo.src = encodeURI(`${IMG_BASE}/${currentProject.folder}/0.mp4`);
     projectVideo.preload = 'metadata';
     projectVideo.load();
+    projectVideo.play().catch(() => {});
   } else {
     projectVideo.pause();
     const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
