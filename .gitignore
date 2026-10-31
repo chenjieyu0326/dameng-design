@@ -1,0 +1,9 @@
+# 局部备份（不入库）
+images/works/_王者2026_原件备份/
+
+# 待整理的素材（不入库）
+images/works/*-待整理/
+
+# .DS_Store
+.DS_Store
+**/.DS_Store
