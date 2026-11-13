@@ -533,6 +533,7 @@ const projectNext = document.getElementById('projectNext');
 
 let currentProject = null;
 let currentImageIdx = 0;
+let loadId = 0;  // 防止快速切图时 onload 回调冲突
 
 function openProject(idx) {
   const p = projects[idx];
@@ -571,14 +572,19 @@ function showImage(idx) {
     projectVideo.preload = 'metadata';
     projectVideo.load();
     projectVideo.play().catch(() => {});
+    projectImage.classList.remove('changing');
   } else {
     projectVideo.pause();
-    const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`);
-    setTimeout(() => {
-      projectImage.src = src + '?x-oss-process=image/resize,w_1600/quality,q_82/format,webp';
-      projectImage.alt = currentProject.title + ' ' + idx;
-      projectImage.classList.remove('changing');
-    }, 150);
+    const thisLoadId = ++loadId;
+    const src = encodeURI(`${IMG_BASE}/${currentProject.folder}/${idx}.jpg`) + '?x-oss-process=image/resize,w_1600/quality,q_82/format,webp';
+    projectImage.onload = () => {
+      if (thisLoadId === loadId) projectImage.classList.remove('changing');
+    };
+    projectImage.onerror = () => {
+      if (thisLoadId === loadId) projectImage.classList.remove('changing');
+    };
+    projectImage.src = src;
+    projectImage.alt = currentProject.title + ' ' + idx;
   }
 
   // 计数器
